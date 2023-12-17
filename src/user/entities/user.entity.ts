@@ -1,4 +1,3 @@
-// todo 用户表
 import {
   Column,
   CreateDateColumn,
@@ -19,6 +18,12 @@ export class User {
 
   @Column({
     length: 50,
+    comment: '用户名',
+  })
+  username: string;
+
+  @Column({
+    length: 50,
     comment: '密码',
   })
   password: string;
@@ -31,9 +36,15 @@ export class User {
   nickName: string;
 
   @Column({
+    comment: '邮箱',
+    length: 50,
+  })
+  email: string;
+
+  @Column({
+    comment: '头像',
     length: 100,
     nullable: true,
-    comment: '头像',
   })
   headPic: string;
 
@@ -55,6 +66,7 @@ export class User {
     default: false,
   })
   isAdmin: boolean;
+
   @CreateDateColumn()
   createTime: Date;
 
