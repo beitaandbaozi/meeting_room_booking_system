@@ -10,8 +10,6 @@ import {
   Inject,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { EmailService } from 'src/email/email.service';
 import { RedisService } from 'src/redis/redis.service';
