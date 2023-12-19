@@ -12,15 +12,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmailService = void 0;
 const common_1 = require("@nestjs/common");
 const nodemailer_1 = require("nodemailer");
+const config_1 = require("@nestjs/config");
 let EmailService = class EmailService {
-    constructor() {
+    constructor(configService) {
+        this.configService = configService;
         this.transporter = (0, nodemailer_1.createTransport)({
-            host: 'smtp.qq.com',
-            port: 587,
+            host: this.configService.get('SMTP_SERVER_HOST'),
+            port: this.configService.get('SMTP_SERVER_PORT'),
             secure: false,
             auth: {
-                user: '2280496040@qq.com',
-                pass: 'kttksbtrvaawdjbi',
+                user: this.configService.get('SMTP_SERVER_USER'),
+                pass: this.configService.get('SMTP_SERVER_PASS'),
             },
         });
     }
@@ -39,6 +41,6 @@ let EmailService = class EmailService {
 exports.EmailService = EmailService;
 exports.EmailService = EmailService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [config_1.ConfigService])
 ], EmailService);
 //# sourceMappingURL=email.service.js.map
