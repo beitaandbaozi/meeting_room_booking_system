@@ -19,6 +19,8 @@ const register_user_dto_1 = require("./dto/register-user.dto");
 const email_service_1 = require("../email/email.service");
 const redis_service_1 = require("../redis/redis.service");
 const login_user_dto_1 = require("./dto/login-user.dto");
+const jwt_1 = require("@nestjs/jwt");
+const config_1 = require("@nestjs/config");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -41,14 +43,78 @@ let UserController = class UserController {
     }
     async login(loginUser) {
         const vo = await this.userService.login(loginUser, false);
+        vo.accessToken = this.jwtService.sign({
+            userId: vo.userInfo.id,
+            username: vo.userInfo.username,
+            roles: vo.userInfo.roles,
+            permissions: vo.userInfo.permissions,
+        }, {
+            expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRES_TIME') || '30m',
+        });
+        vo.refreshToken = this.jwtService.sign({ userId: vo.userInfo.id }, {
+            expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRES_TIME') || '7d',
+        });
         return vo;
     }
     async adminLogin(loginUser) {
         const vo = await this.userService.login(loginUser, true);
+        vo.accessToken = this.jwtService.sign({
+            userId: vo.userInfo.id,
+            username: vo.userInfo.username,
+            roles: vo.userInfo.roles,
+            permissions: vo.userInfo.permissions,
+        }, {
+            expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRES_TIME') || '30m',
+        });
+        vo.refreshToken = this.jwtService.sign({ userId: vo.userInfo.id }, {
+            expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRES_TIME') || '7d',
+        });
         return vo;
+    }
+    async refreshToken(refreshToken, isAdmin) {
+        const data = this.jwtService.verify(refreshToken);
+        const user = await this.userService.findUserById(data.userId, isAdmin);
+        const access_token = this.jwtService.sign({
+            userId: user.id,
+            username: user.username,
+            roles: user.roles,
+            permissions: user.permissions,
+        }, {
+            expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRES_TIME') || '30m',
+        });
+        const refresh_token = this.jwtService.sign({ userId: user.id }, {
+            expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRES_TIME') || '7d',
+        });
+        return { access_token, refresh_token };
+    }
+    async refresh(refreshToken) {
+        try {
+            const { access_token, refresh_token } = await this.refreshToken(refreshToken, false);
+            return { access_token, refresh_token };
+        }
+        catch (error) {
+            throw new common_1.UnauthorizedException('token 已经失效，请重新登录');
+        }
+    }
+    async refreshAdmin(refreshToken) {
+        try {
+            const { access_token, refresh_token } = await this.refreshToken(refreshToken, true);
+            return { access_token, refresh_token };
+        }
+        catch (error) {
+            throw new common_1.UnauthorizedException('token 已经失效，请重新登录');
+        }
     }
 };
 exports.UserController = UserController;
+__decorate([
+    (0, common_1.Inject)(jwt_1.JwtService),
+    __metadata("design:type", jwt_1.JwtService)
+], UserController.prototype, "jwtService", void 0);
+__decorate([
+    (0, common_1.Inject)(config_1.ConfigService),
+    __metadata("design:type", config_1.ConfigService)
+], UserController.prototype, "configService", void 0);
 __decorate([
     (0, common_1.Inject)(email_service_1.EmailService),
     __metadata("design:type", email_service_1.EmailService)
@@ -91,6 +157,20 @@ __decorate([
     __metadata("design:paramtypes", [login_user_dto_1.LoginUserDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "adminLogin", null);
+__decorate([
+    (0, common_1.Get)('refresh'),
+    __param(0, (0, common_1.Query)('refreshToken')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "refresh", null);
+__decorate([
+    (0, common_1.Get)('admin/refresh'),
+    __param(0, (0, common_1.Query)('refreshToken')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "refreshAdmin", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])

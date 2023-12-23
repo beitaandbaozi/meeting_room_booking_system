@@ -9,8 +9,20 @@ import { Role } from './user/entities/role.entity';
 import { RedisModule } from './redis/redis.module';
 import { EmailModule } from './email/email.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 @Module({
   imports: [
+    // todo JWT 模块配置
+    JwtModule.registerAsync({
+      global: true,
+      useFactory(configService: ConfigService) {
+        return {
+          secret: configService.get('JWT_SECRET_KEY'),
+          signOptions: { expiresIn: '30m' },
+        };
+      },
+      inject: [ConfigService],
+    }),
     // todo config 模块配置
     ConfigModule.forRoot({
       isGlobal: true,

@@ -10,4 +10,11 @@ export declare class UserService {
     initData(): Promise<void>;
     register(userData: RegisterUserDto): Promise<"register success" | "register fail">;
     login(loginUser: LoginUserDto, isAdmin: boolean): Promise<LoginUserVo>;
+    findUserById(userId: number, isAdmin: boolean): Promise<{
+        id: number;
+        username: string;
+        isAdmin: boolean;
+        roles: string[];
+        permissions: any[];
+    }>;
 }
