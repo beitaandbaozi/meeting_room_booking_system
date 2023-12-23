@@ -13,6 +13,7 @@ import { UserService } from './user.service';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { EmailService } from 'src/email/email.service';
 import { RedisService } from 'src/redis/redis.service';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -42,5 +43,24 @@ export class UserController {
       html: `<h1>验证码：${code}</h1>`,
     });
     return '发送邮箱验证码成功';
+  }
+
+  // todo 初始化数据（test鉴权）
+  @Get('init-data')
+  async initData() {
+    this.userService.initData();
+  }
+
+  // todo 普通用户登录
+  @Post('login')
+  async login(@Body() loginUser: LoginUserDto) {
+    const vo = await this.userService.login(loginUser, false);
+    return vo;
+  }
+  // todo 管理员登录
+  @Post('admin/login')
+  async adminLogin(@Body() loginUser: LoginUserDto) {
+    const vo = await this.userService.login(loginUser, true);
+    return vo;
   }
 }
