@@ -20,8 +20,8 @@ const email_module_1 = require("./email/email.module");
 const config_1 = require("@nestjs/config");
 const jwt_1 = require("@nestjs/jwt");
 const core_1 = require("@nestjs/core");
-const login_guard_1 = require("./login.guard");
-const permission_guard_1 = require("./permission.guard");
+const login_guard_1 = require("./guard/login.guard");
+const permission_guard_1 = require("./guard/permission.guard");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;

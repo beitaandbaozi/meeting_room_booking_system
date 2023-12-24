@@ -9,7 +9,7 @@ import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { Observable } from 'rxjs';
 import { JwtService } from '@nestjs/jwt';
-import { Permission } from './user/entities/permission.entity';
+import { Permission } from '../user/entities/permission.entity';
 
 // todo request 增加属性
 interface JwtUserData {
@@ -53,6 +53,7 @@ export class LoginGuard implements CanActivate {
     try {
       const token = authorization.split(' ')[1];
       const data = this.jwtService.verify<JwtUserData>(token);
+      // todo 在这里赋值的目的是为了在 permissionGuard 进行权限对比
       request.user = {
         userId: data.userId,
         username: data.username,
