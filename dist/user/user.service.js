@@ -20,6 +20,7 @@ const utils_1 = require("../utils");
 const role_entity_1 = require("./entities/role.entity");
 const permission_entity_1 = require("./entities/permission.entity");
 const login_user_vo_1 = require("./vo/login-user.vo");
+const email_service_1 = require("../email/email.service");
 let UserService = UserService_1 = class UserService {
     constructor() {
         this.logger = new common_1.Logger();
@@ -170,6 +171,16 @@ let UserService = UserService_1 = class UserService {
             return '修改密码失败！😭';
         }
     }
+    async getUpdatePasswordCaptcha(address) {
+        const code = Math.random().toString().slice(2, 8);
+        await this.redisService.set(`update_password_captcha_${address}`, code, 10 * 60);
+        await this.emailService.sendMail({
+            to: address,
+            subject: '更改密码验证码',
+            html: `<p>您的验证码是：${code}</p>`,
+        });
+        return '发送成功！😊';
+    }
 };
 exports.UserService = UserService;
 __decorate([
@@ -188,6 +199,10 @@ __decorate([
     (0, typeorm_1.InjectRepository)(permission_entity_1.Permission),
     __metadata("design:type", typeorm_2.Repository)
 ], UserService.prototype, "permissionRepository", void 0);
+__decorate([
+    (0, common_1.Inject)(email_service_1.EmailService),
+    __metadata("design:type", email_service_1.EmailService)
+], UserService.prototype, "emailService", void 0);
 exports.UserService = UserService = UserService_1 = __decorate([
     (0, common_1.Injectable)()
 ], UserService);

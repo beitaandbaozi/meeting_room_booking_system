@@ -195,4 +195,10 @@ export class UserController {
   ) {
     return await this.userService.updatePassword(userId, passwordDto);
   }
+
+  // todo 修改密码邮箱发送验证码
+  @Get('update_password/captcha')
+  async getUpdatePasswordCaptcha(@Query('address') address: string) {
+    return await this.userService.getUpdatePasswordCaptcha(address);
+  }
 }

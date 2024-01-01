@@ -9,6 +9,7 @@ export declare class UserService {
     private redisService;
     private roleRepository;
     private permissionRepository;
+    private emailService;
     initData(): Promise<void>;
     register(userData: RegisterUserDto): Promise<"register success" | "register fail">;
     login(loginUser: LoginUserDto, isAdmin: boolean): Promise<LoginUserVo>;
@@ -21,4 +22,5 @@ export declare class UserService {
     }>;
     findUserDetailById(userId: number): Promise<User>;
     updatePassword(userId: number, passwordDto: UpdateUserPasswordDto): Promise<"修改密码成功！😆" | "修改密码失败！😭">;
+    getUpdatePasswordCaptcha(address: string): Promise<string>;
 }

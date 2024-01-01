@@ -16,6 +16,7 @@ import { Permission } from './entities/permission.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import { LoginUserVo } from './vo/login-user.vo';
 import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class UserService {
@@ -33,6 +34,10 @@ export class UserService {
   // todo 注入permission对象
   @InjectRepository(Permission)
   private permissionRepository: Repository<Permission>;
+  // todo 注入邮件服务
+  @Inject(EmailService)
+  private emailService: EmailService;
+
   // todo 测试数据
   async initData() {
     // admin 账号
@@ -209,5 +214,23 @@ export class UserService {
       this.logger.error(error, UserService);
       return '修改密码失败！😭';
     }
+  }
+  // todo 修改密码邮箱验证码发送
+  async getUpdatePasswordCaptcha(address: string) {
+    // 1. 生成验证码
+    // 2. 生成redis数据
+    // 3. 发送邮件
+    const code = Math.random().toString().slice(2, 8);
+    await this.redisService.set(
+      `update_password_captcha_${address}`,
+      code,
+      10 * 60,
+    );
+    await this.emailService.sendMail({
+      to: address,
+      subject: '更改密码验证码',
+      html: `<p>您的验证码是：${code}</p>`,
+    });
+    return '发送成功！😊';
   }
 }
