@@ -23,6 +23,7 @@ const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("@nestjs/config");
 const custom_decorator_1 = require("../custom.decorator");
 const user_info_vo_1 = require("./vo/user-info.vo");
+const update_user_password_dto_1 = require("./dto/update-user-password.dto");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -120,6 +121,9 @@ let UserController = class UserController {
         userInfoVo.createTime = user.createTime;
         return userInfoVo;
     }
+    async updatePassword(userId, passwordDto) {
+        return await this.userService.updatePassword(userId, passwordDto);
+    }
 };
 exports.UserController = UserController;
 __decorate([
@@ -194,6 +198,15 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "info", null);
+__decorate([
+    (0, common_1.Post)(['update_password', 'admin/update_password']),
+    (0, custom_decorator_1.RequireLogin)(),
+    __param(0, (0, custom_decorator_1.UserInfo)('userId')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, update_user_password_dto_1.UpdateUserPasswordDto]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "updatePassword", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])

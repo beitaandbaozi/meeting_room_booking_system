@@ -15,6 +15,7 @@ import { Role } from './entities/role.entity';
 import { Permission } from './entities/permission.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import { LoginUserVo } from './vo/login-user.vo';
+import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 
 @Injectable()
 export class UserService {
@@ -184,5 +185,29 @@ export class UserService {
       },
     });
     return user;
+  }
+  // todo 修改密码
+  async updatePassword(userId: number, passwordDto: UpdateUserPasswordDto) {
+    // 1. redis 查询是否有该邮箱修改密码发送过的操作
+    // 1.1 没有，说明已经过期，重新获取
+    // 1.2 有，进行对比
+    const captcha = await this.redisService.get(
+      `update_password_captcha_${passwordDto.email}`,
+    );
+    if (!captcha) {
+      throw new HttpException('验证码已失效', HttpStatus.BAD_REQUEST);
+    }
+    if (passwordDto.captcha !== captcha) {
+      throw new HttpException('验证码不正确', HttpStatus.BAD_REQUEST);
+    }
+    const foundUser = await this.userRepository.findOneBy({ id: userId });
+    foundUser.password = md5(passwordDto.password);
+    try {
+      await this.userRepository.save(foundUser);
+      return '修改密码成功！😆';
+    } catch (error) {
+      this.logger.error(error, UserService);
+      return '修改密码失败！😭';
+    }
   }
 }

@@ -151,6 +151,25 @@ let UserService = UserService_1 = class UserService {
         });
         return user;
     }
+    async updatePassword(userId, passwordDto) {
+        const captcha = await this.redisService.get(`update_password_captcha_${passwordDto.email}`);
+        if (!captcha) {
+            throw new common_1.HttpException('验证码已失效', common_1.HttpStatus.BAD_REQUEST);
+        }
+        if (passwordDto.captcha !== captcha) {
+            throw new common_1.HttpException('验证码不正确', common_1.HttpStatus.BAD_REQUEST);
+        }
+        const foundUser = await this.userRepository.findOneBy({ id: userId });
+        foundUser.password = (0, utils_1.md5)(passwordDto.password);
+        try {
+            await this.userRepository.save(foundUser);
+            return '修改密码成功！😆';
+        }
+        catch (error) {
+            this.logger.error(error, UserService_1);
+            return '修改密码失败！😭';
+        }
+    }
 };
 exports.UserService = UserService;
 __decorate([
