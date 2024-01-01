@@ -1,6 +1,7 @@
 import { UserService } from './user.service';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
+import { UserDetailVo } from './vo/user-info.vo';
 export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
@@ -25,5 +26,5 @@ export declare class UserController {
         access_token: string;
         refresh_token: string;
     }>;
-    info(userId: number): Promise<import("./entities/user.entity").User>;
+    info(userId: number): Promise<UserDetailVo>;
 }

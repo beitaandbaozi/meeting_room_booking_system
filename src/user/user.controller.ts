@@ -18,6 +18,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { RequireLogin, UserInfo } from 'src/custom.decorator';
+import { UserDetailVo } from './vo/user-info.vo';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -170,6 +171,17 @@ export class UserController {
   @Get('info')
   @RequireLogin()
   async info(@UserInfo('userId') userId: number) {
-    return this.userService.findUserDetailById(userId);
+    const user = await this.userService.findUserDetailById(userId);
+    const userInfoVo = new UserDetailVo();
+    userInfoVo.id = user.id;
+    userInfoVo.username = user.username;
+    userInfoVo.nickName = user.nickName;
+    userInfoVo.email = user.email;
+    userInfoVo.headPic = user.headPic;
+    userInfoVo.phoneNumber = user.phoneNumber;
+    userInfoVo.isFrozen = user.isFrozen;
+    userInfoVo.createTime = user.createTime;
+
+    return userInfoVo;
   }
 }

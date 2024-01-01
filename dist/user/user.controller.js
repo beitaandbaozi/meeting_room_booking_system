@@ -22,6 +22,7 @@ const login_user_dto_1 = require("./dto/login-user.dto");
 const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("@nestjs/config");
 const custom_decorator_1 = require("../custom.decorator");
+const user_info_vo_1 = require("./vo/user-info.vo");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -107,7 +108,17 @@ let UserController = class UserController {
         }
     }
     async info(userId) {
-        return this.userService.findUserDetailById(userId);
+        const user = await this.userService.findUserDetailById(userId);
+        const userInfoVo = new user_info_vo_1.UserDetailVo();
+        userInfoVo.id = user.id;
+        userInfoVo.username = user.username;
+        userInfoVo.nickName = user.nickName;
+        userInfoVo.email = user.email;
+        userInfoVo.headPic = user.headPic;
+        userInfoVo.phoneNumber = user.phoneNumber;
+        userInfoVo.isFrozen = user.isFrozen;
+        userInfoVo.createTime = user.createTime;
+        return userInfoVo;
     }
 };
 exports.UserController = UserController;
