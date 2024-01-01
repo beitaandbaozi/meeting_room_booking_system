@@ -176,4 +176,13 @@ export class UserService {
       }, []),
     };
   }
+  // todo 通过用户id获取用户信息
+  async findUserDetailById(userId: number) {
+    const user = await this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
+    });
+    return user;
+  }
 }

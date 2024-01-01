@@ -25,4 +25,5 @@ export declare class UserController {
         access_token: string;
         refresh_token: string;
     }>;
+    info(userId: number): Promise<import("./entities/user.entity").User>;
 }

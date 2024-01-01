@@ -21,6 +21,7 @@ const redis_service_1 = require("../redis/redis.service");
 const login_user_dto_1 = require("./dto/login-user.dto");
 const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("@nestjs/config");
+const custom_decorator_1 = require("../custom.decorator");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -105,6 +106,9 @@ let UserController = class UserController {
             throw new common_1.UnauthorizedException('token 已经失效，请重新登录');
         }
     }
+    async info(userId) {
+        return this.userService.findUserDetailById(userId);
+    }
 };
 exports.UserController = UserController;
 __decorate([
@@ -171,6 +175,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "refreshAdmin", null);
+__decorate([
+    (0, common_1.Get)('info'),
+    (0, custom_decorator_1.RequireLogin)(),
+    __param(0, (0, custom_decorator_1.UserInfo)('userId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "info", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])
