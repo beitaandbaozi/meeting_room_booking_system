@@ -17,6 +17,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { LoginUserVo } from './vo/login-user.vo';
 import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 import { EmailService } from 'src/email/email.service';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -232,5 +233,50 @@ export class UserService {
       html: `<p>您的验证码是：${code}</p>`,
     });
     return '发送成功！😊';
+  }
+  // todo 修改信息
+  async updateUserInfo(userId: number, updateUserDto: UpdateUserDto) {
+    const captcha = await this.redisService.get(
+      `update_user_captcha_${updateUserDto.email}`,
+    );
+    if (!captcha) {
+      throw new HttpException('验证码已失效', HttpStatus.BAD_REQUEST);
+    }
+    if (updateUserDto.captcha !== captcha) {
+      throw new HttpException('验证码不正确', HttpStatus.BAD_REQUEST);
+    }
+
+    const foundUser = await this.userRepository.findOneBy({ id: userId });
+
+    if (updateUserDto.nickName) {
+      foundUser.nickName = updateUserDto.nickName;
+    }
+
+    if (updateUserDto.headPic) {
+      foundUser.headPic = updateUserDto.headPic;
+    }
+
+    try {
+      await this.userRepository.save(foundUser);
+      return '修改成功！😊';
+    } catch (error) {
+      this.logger.error(error, UserService);
+      return '修改失败！😢';
+    }
+  }
+  // todo 修改个人信息发送验证码
+  async getUpdateUserCaptcha(address: string) {
+    const captcha = Math.random.toString().slice(2, 8);
+    await this.redisService.set(
+      `update_user_captcha_${address}`,
+      captcha,
+      10 * 60,
+    );
+    await this.emailService.sendMail({
+      to: address,
+      subject: '更改个人信息验证码',
+      html: `<p>您的验证码是：${captcha}</p>`,
+    });
+    return '验证码已发送，请查收！😊';
   }
 }

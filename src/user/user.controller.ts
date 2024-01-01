@@ -20,6 +20,7 @@ import { ConfigService } from '@nestjs/config';
 import { RequireLogin, UserInfo } from 'src/custom.decorator';
 import { UserDetailVo } from './vo/user-info.vo';
 import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -200,5 +201,21 @@ export class UserController {
   @Get('update_password/captcha')
   async getUpdatePasswordCaptcha(@Query('address') address: string) {
     return await this.userService.getUpdatePasswordCaptcha(address);
+  }
+
+  // todo 修改个人信息
+  @Post(['update', 'admin/update'])
+  @RequireLogin()
+  async updateUserInfo(
+    @UserInfo('userId') userId: number,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return await this.userService.updateUserInfo(userId, updateUserDto);
+  }
+
+  // todo 修改个人信息发送验证码
+  @Get('update/captcha')
+  async getUpdateUserCaptcha(@Query('address') address: string) {
+    return await this.userService.getUpdateUserCaptcha(address);
   }
 }

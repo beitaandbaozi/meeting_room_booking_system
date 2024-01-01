@@ -181,6 +181,40 @@ let UserService = UserService_1 = class UserService {
         });
         return '发送成功！😊';
     }
+    async updateUserInfo(userId, updateUserDto) {
+        const captcha = await this.redisService.get(`update_user_captcha_${updateUserDto.email}`);
+        if (!captcha) {
+            throw new common_1.HttpException('验证码已失效', common_1.HttpStatus.BAD_REQUEST);
+        }
+        if (updateUserDto.captcha !== captcha) {
+            throw new common_1.HttpException('验证码不正确', common_1.HttpStatus.BAD_REQUEST);
+        }
+        const foundUser = await this.userRepository.findOneBy({ id: userId });
+        if (updateUserDto.nickName) {
+            foundUser.nickName = updateUserDto.nickName;
+        }
+        if (updateUserDto.headPic) {
+            foundUser.headPic = updateUserDto.headPic;
+        }
+        try {
+            await this.userRepository.save(foundUser);
+            return '修改成功！😊';
+        }
+        catch (error) {
+            this.logger.error(error, UserService_1);
+            return '修改失败！😢';
+        }
+    }
+    async getUpdateUserCaptcha(address) {
+        const captcha = Math.random.toString().slice(2, 8);
+        await this.redisService.set(`update_user_captcha_${address}`, captcha, 10 * 60);
+        await this.emailService.sendMail({
+            to: address,
+            subject: '更改个人信息验证码',
+            html: `<p>您的验证码是：${captcha}</p>`,
+        });
+        return '验证码已发送，请查收！😊';
+    }
 };
 exports.UserService = UserService;
 __decorate([
