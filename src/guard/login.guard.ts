@@ -10,6 +10,7 @@ import { Request } from 'express';
 import { Observable } from 'rxjs';
 import { JwtService } from '@nestjs/jwt';
 import { Permission } from '../user/entities/permission.entity';
+import { UnLoginException } from 'src/filter/unlogin.filter';
 
 // todo request 增加属性
 interface JwtUserData {
@@ -62,7 +63,8 @@ export class LoginGuard implements CanActivate {
       };
       return true;
     } catch (error) {
-      throw new UnauthorizedException('token已经失效,请重新登录');
+      // throw new UnauthorizedException('token已经失效,请重新登录');
+      throw new UnLoginException();
     }
   }
 }
