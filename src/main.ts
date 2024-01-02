@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { FormatResponseInterceptor } from './interceptor/format-response.interceptor';
 import { InvokeRecordInterceptor } from './interceptor/invoke-record.interceptor';
 import { UnLoginFilter } from './filter/unlogin.filter';
+import { CustomExceptionFilter } from './filter/custom-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,6 +16,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new InvokeRecordInterceptor());
   // todo 全局使用 exception filter
   app.useGlobalFilters(new UnLoginFilter());
+  app.useGlobalFilters(new CustomExceptionFilter());
 
   const configService = app.get(ConfigService);
   await app.listen(configService.get(`NEST_SERVER_PORT`));
