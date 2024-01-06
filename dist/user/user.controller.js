@@ -134,6 +134,10 @@ let UserController = class UserController {
     async getUpdateUserCaptcha(address) {
         return await this.userService.getUpdateUserCaptcha(address);
     }
+    async freezeUser(userId) {
+        await this.userService.freezeUser(userId);
+        return 'freeze success';
+    }
 };
 exports.UserController = UserController;
 __decorate([
@@ -240,6 +244,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getUpdateUserCaptcha", null);
+__decorate([
+    (0, common_1.Get)('freeze'),
+    __param(0, (0, common_1.Query)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "freezeUser", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])

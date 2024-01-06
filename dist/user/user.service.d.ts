@@ -26,4 +26,5 @@ export declare class UserService {
     getUpdatePasswordCaptcha(address: string): Promise<string>;
     updateUserInfo(userId: number, updateUserDto: UpdateUserDto): Promise<"修改成功！😊" | "修改失败！😢">;
     getUpdateUserCaptcha(address: string): Promise<string>;
+    freezeUser(userId: number): Promise<void>;
 }

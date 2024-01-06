@@ -279,4 +279,14 @@ export class UserService {
     });
     return '验证码已发送，请查收！😊';
   }
+  // todo 冻结用户
+  async freezeUser(userId: number) {
+    // 1.获取这个用户信息
+    // 1.1 没有 直接返回对应信息
+    // 1.2 有 更改字段
+    const user = await this.userRepository.findOneBy({ id: userId });
+    if (!user) throw new HttpException('用户不存在', HttpStatus.BAD_REQUEST);
+    user.isFrozen = true;
+    await this.userRepository.save(user);
+  }
 }

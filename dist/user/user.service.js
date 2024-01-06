@@ -215,6 +215,13 @@ let UserService = UserService_1 = class UserService {
         });
         return '验证码已发送，请查收！😊';
     }
+    async freezeUser(userId) {
+        const user = await this.userRepository.findOneBy({ id: userId });
+        if (!user)
+            throw new common_1.HttpException('用户不存在', common_1.HttpStatus.BAD_REQUEST);
+        user.isFrozen = true;
+        await this.userRepository.save(user);
+    }
 };
 exports.UserService = UserService;
 __decorate([
