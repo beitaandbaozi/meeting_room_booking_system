@@ -27,4 +27,8 @@ export declare class UserService {
     updateUserInfo(userId: number, updateUserDto: UpdateUserDto): Promise<"修改成功！😊" | "修改失败！😢">;
     getUpdateUserCaptcha(address: string): Promise<string>;
     freezeUser(userId: number): Promise<void>;
+    getUserList(pageNumber: number, pageSize: number, username: string, nickName: string, email: string): Promise<{
+        users: User[];
+        totalCount: number;
+    }>;
 }

@@ -9,6 +9,9 @@ import {
   Query,
   Inject,
   UnauthorizedException,
+  ParseIntPipe,
+  BadRequestException,
+  DefaultValuePipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterUserDto } from './dto/register-user.dto';
@@ -21,6 +24,7 @@ import { RequireLogin, UserInfo } from 'src/custom.decorator';
 import { UserDetailVo } from './vo/user-info.vo';
 import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { validatePageType } from 'src/utils';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -224,5 +228,29 @@ export class UserController {
   async freezeUser(@Query('id') userId: number) {
     await this.userService.freezeUser(userId);
     return 'freeze success';
+  }
+
+  // todo 获取用户列表
+  @Get('list')
+  async getUserList(
+    @Query(
+      'pageNumber',
+      new DefaultValuePipe(1),
+      validatePageType('pageNumber'),
+    )
+    pageNumber: number,
+    @Query('pageSize', new DefaultValuePipe(10), validatePageType('pageSize'))
+    pageSize: number,
+    @Query('username') username: string,
+    @Query('nickName') nickName: string,
+    @Query('email') email: string,
+  ) {
+    return await this.userService.getUserList(
+      pageNumber,
+      pageSize,
+      username,
+      nickName,
+      email,
+    );
   }
 }

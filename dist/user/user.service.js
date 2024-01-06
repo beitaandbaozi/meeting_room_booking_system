@@ -222,6 +222,35 @@ let UserService = UserService_1 = class UserService {
         user.isFrozen = true;
         await this.userRepository.save(user);
     }
+    async getUserList(pageNumber, pageSize, username, nickName, email) {
+        const skipCount = (pageNumber - 1) * pageSize;
+        const condition = {};
+        if (username)
+            condition.username = (0, typeorm_2.Like)(`%${username}%`);
+        if (nickName)
+            condition.nickName = (0, typeorm_2.Like)(`%${nickName}%`);
+        if (email)
+            condition.email = (0, typeorm_2.Like)(`%${email}%`);
+        const [users, totalCount] = await this.userRepository.findAndCount({
+            select: [
+                'id',
+                'username',
+                'nickName',
+                'email',
+                'phoneNumber',
+                'isFrozen',
+                'headPic',
+                'createTime',
+            ],
+            skip: skipCount,
+            take: pageSize,
+            where: condition,
+        });
+        return {
+            users,
+            totalCount,
+        };
+    }
 };
 exports.UserService = UserService;
 __decorate([

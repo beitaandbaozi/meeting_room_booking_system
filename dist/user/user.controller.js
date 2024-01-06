@@ -25,6 +25,7 @@ const custom_decorator_1 = require("../custom.decorator");
 const user_info_vo_1 = require("./vo/user-info.vo");
 const update_user_password_dto_1 = require("./dto/update-user-password.dto");
 const update_user_dto_1 = require("./dto/update-user.dto");
+const utils_1 = require("../utils");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -137,6 +138,9 @@ let UserController = class UserController {
     async freezeUser(userId) {
         await this.userService.freezeUser(userId);
         return 'freeze success';
+    }
+    async getUserList(pageNumber, pageSize, username, nickName, email) {
+        return await this.userService.getUserList(pageNumber, pageSize, username, nickName, email);
     }
 };
 exports.UserController = UserController;
@@ -251,6 +255,17 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "freezeUser", null);
+__decorate([
+    (0, common_1.Get)('list'),
+    __param(0, (0, common_1.Query)('pageNumber', new common_1.DefaultValuePipe(1), (0, utils_1.validatePageType)('pageNumber'))),
+    __param(1, (0, common_1.Query)('pageSize', new common_1.DefaultValuePipe(10), (0, utils_1.validatePageType)('pageSize'))),
+    __param(2, (0, common_1.Query)('username')),
+    __param(3, (0, common_1.Query)('nickName')),
+    __param(4, (0, common_1.Query)('email')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number, String, String, String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getUserList", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])

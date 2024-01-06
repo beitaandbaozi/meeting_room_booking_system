@@ -34,4 +34,8 @@ export declare class UserController {
     updateUserInfo(userId: number, updateUserDto: UpdateUserDto): Promise<"修改成功！😊" | "修改失败！😢">;
     getUpdateUserCaptcha(address: string): Promise<string>;
     freezeUser(userId: number): Promise<string>;
+    getUserList(pageNumber: number, pageSize: number, username: string, nickName: string, email: string): Promise<{
+        users: import("./entities/user.entity").User[];
+        totalCount: number;
+    }>;
 }
