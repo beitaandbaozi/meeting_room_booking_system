@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RegisterUserDto = void 0;
+const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class RegisterUserDto {
 }
@@ -18,12 +19,14 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)({
         message: '用户名不能为空',
     }),
+    (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], RegisterUserDto.prototype, "username", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)({
         message: '昵称不能为空',
     }),
+    (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], RegisterUserDto.prototype, "nickName", void 0);
 __decorate([
@@ -33,18 +36,23 @@ __decorate([
     (0, class_validator_1.MinLength)(6, {
         message: '密码长度不能小于6位',
     }),
+    (0, swagger_1.ApiProperty)({
+        minLength: 6,
+    }),
     __metadata("design:type", String)
 ], RegisterUserDto.prototype, "password", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)({
         message: '邮箱不能为空',
     }),
+    (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], RegisterUserDto.prototype, "email", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)({
         message: '验证码不能为空',
     }),
+    (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], RegisterUserDto.prototype, "captcha", void 0);
 //# sourceMappingURL=register-user.dto.js.map

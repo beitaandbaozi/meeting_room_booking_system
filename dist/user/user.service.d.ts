@@ -4,6 +4,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { LoginUserVo } from './vo/login-user.vo';
 import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserListVo } from './vo/user-list.vo';
 export declare class UserService {
     private logger;
     private userRepository;
@@ -27,8 +28,5 @@ export declare class UserService {
     updateUserInfo(userId: number, updateUserDto: UpdateUserDto): Promise<"修改成功！😊" | "修改失败！😢">;
     getUpdateUserCaptcha(address: string): Promise<string>;
     freezeUser(userId: number): Promise<void>;
-    getUserList(pageNumber: number, pageSize: number, username: string, nickName: string, email: string): Promise<{
-        users: User[];
-        totalCount: number;
-    }>;
+    getUserList(pageNumber: number, pageSize: number, username: string, nickName: string, email: string): Promise<UserListVo>;
 }

@@ -26,6 +26,10 @@ const user_info_vo_1 = require("./vo/user-info.vo");
 const update_user_password_dto_1 = require("./dto/update-user-password.dto");
 const update_user_dto_1 = require("./dto/update-user.dto");
 const utils_1 = require("../utils");
+const swagger_1 = require("@nestjs/swagger");
+const login_user_vo_1 = require("./vo/login-user.vo");
+const refresh_token_vo_1 = require("./vo/refresh-token.vo");
+const user_list_vo_1 = require("./vo/user-list.vo");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -90,7 +94,10 @@ let UserController = class UserController {
         const refresh_token = this.jwtService.sign({ userId: user.id }, {
             expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRES_TIME') || '7d',
         });
-        return { access_token, refresh_token };
+        const vo = new refresh_token_vo_1.RefreshTokenVo();
+        vo.access_token = access_token;
+        vo.refresh_token = refresh_token;
+        return { access_token: vo.access_token, refresh_token: vo.refresh_token };
     }
     async refresh(refreshToken) {
         try {
@@ -161,6 +168,16 @@ __decorate([
     __metadata("design:type", redis_service_1.RedisService)
 ], UserController.prototype, "redisService", void 0);
 __decorate([
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.BAD_REQUEST,
+        description: '验证码失效/验证码错误/用户名已存在',
+        type: String,
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.OK,
+        description: '注册成功/失败',
+        type: String,
+    }),
     (0, common_1.Post)('register'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -168,6 +185,18 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "register", null);
 __decorate([
+    (0, swagger_1.ApiQuery)({
+        name: 'address',
+        type: String,
+        description: '邮箱地址',
+        required: true,
+        example: 'xxx@xx.com',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.OK,
+        description: '发送成功',
+        type: String,
+    }),
     (0, common_1.Get)('register-captcha'),
     __param(0, (0, common_1.Query)('address')),
     __metadata("design:type", Function),
@@ -181,6 +210,19 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "initData", null);
 __decorate([
+    (0, swagger_1.ApiBody)({
+        type: login_user_dto_1.LoginUserDto,
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.BAD_REQUEST,
+        description: '用户不存在/密码错误',
+        type: String,
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.OK,
+        description: '用户信息和token',
+        type: login_user_vo_1.LoginUserVo,
+    }),
     (0, common_1.Post)('login'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -188,6 +230,19 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "login", null);
 __decorate([
+    (0, swagger_1.ApiBody)({
+        type: login_user_dto_1.LoginUserDto,
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.BAD_REQUEST,
+        description: '用户不存在/密码错误',
+        type: String,
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.OK,
+        description: '用户信息和token',
+        type: login_user_vo_1.LoginUserVo,
+    }),
     (0, common_1.Post)('admin/login'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -195,6 +250,22 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "adminLogin", null);
 __decorate([
+    (0, swagger_1.ApiQuery)({
+        name: 'refreshToken',
+        type: String,
+        description: '刷新token',
+        required: true,
+        example: 'xxxxxxxxyyyyyyyzzzzz',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.UNAUTHORIZED,
+        description: '无效的token',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.OK,
+        description: '刷新token成功',
+        type: refresh_token_vo_1.RefreshTokenVo,
+    }),
     (0, common_1.Get)('refresh'),
     __param(0, (0, common_1.Query)('refreshToken')),
     __metadata("design:type", Function),
@@ -202,6 +273,22 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "refresh", null);
 __decorate([
+    (0, swagger_1.ApiQuery)({
+        name: 'refreshToken',
+        type: String,
+        description: '刷新token',
+        required: true,
+        example: 'xxxxxxxxyyyyyyyzzzzz',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.UNAUTHORIZED,
+        description: '无效的token',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.OK,
+        description: '刷新token成功',
+        type: refresh_token_vo_1.RefreshTokenVo,
+    }),
     (0, common_1.Get)('admin/refresh'),
     __param(0, (0, common_1.Query)('refreshToken')),
     __metadata("design:type", Function),
@@ -209,6 +296,18 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "refreshAdmin", null);
 __decorate([
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiQuery)({
+        name: 'userId',
+        description: '用户编号',
+        type: Number,
+        required: true,
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.OK,
+        description: '获取用户信息成功',
+        type: user_info_vo_1.UserDetailVo,
+    }),
     (0, common_1.Get)('info'),
     (0, custom_decorator_1.RequireLogin)(),
     __param(0, (0, custom_decorator_1.UserInfo)('userId')),
@@ -217,6 +316,15 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "info", null);
 __decorate([
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiBody)({
+        type: update_user_password_dto_1.UpdateUserPasswordDto,
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.BAD_REQUEST,
+        description: '验证码已失效/验证码不正确',
+        type: String,
+    }),
     (0, common_1.Post)(['update_password', 'admin/update_password']),
     (0, custom_decorator_1.RequireLogin)(),
     __param(0, (0, custom_decorator_1.UserInfo)('userId')),
@@ -226,13 +334,37 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updatePassword", null);
 __decorate([
+    (0, swagger_1.ApiQuery)({
+        name: 'address',
+        description: '邮箱地址',
+        required: true,
+        type: String,
+    }),
+    (0, swagger_1.ApiResponse)({
+        type: String,
+        description: '发送成功',
+    }),
     (0, common_1.Get)('update_password/captcha'),
+    (0, custom_decorator_1.RequireLogin)(),
     __param(0, (0, common_1.Query)('address')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getUpdatePasswordCaptcha", null);
 __decorate([
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiBody)({
+        type: update_user_dto_1.UpdateUserDto,
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.BAD_REQUEST,
+        description: '验证码已失效/不正确',
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.OK,
+        description: '更新成功',
+        type: String,
+    }),
     (0, common_1.Post)(['update', 'admin/update']),
     (0, custom_decorator_1.RequireLogin)(),
     __param(0, (0, custom_decorator_1.UserInfo)('userId')),
@@ -249,6 +381,16 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getUpdateUserCaptcha", null);
 __decorate([
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiQuery)({
+        name: 'id',
+        description: 'userId',
+        type: Number,
+    }),
+    (0, swagger_1.ApiResponse)({
+        type: String,
+        description: 'success',
+    }),
     (0, common_1.Get)('freeze'),
     __param(0, (0, common_1.Query)('id')),
     __metadata("design:type", Function),
@@ -256,7 +398,38 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "freezeUser", null);
 __decorate([
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiQuery)({
+        name: 'pageNo',
+        description: '第几页',
+        type: Number,
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'pageSize',
+        description: '每页多少条',
+        type: Number,
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'username',
+        description: '用户名',
+        type: Number,
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'nickName',
+        description: '昵称',
+        type: Number,
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'email',
+        description: '邮箱地址',
+        type: Number,
+    }),
+    (0, swagger_1.ApiResponse)({
+        type: user_list_vo_1.UserListVo,
+        description: '用户列表',
+    }),
     (0, common_1.Get)('list'),
+    (0, custom_decorator_1.RequireLogin)(),
     __param(0, (0, common_1.Query)('pageNumber', new common_1.DefaultValuePipe(1), (0, utils_1.validatePageType)('pageNumber'))),
     __param(1, (0, common_1.Query)('pageSize', new common_1.DefaultValuePipe(10), (0, utils_1.validatePageType)('pageSize'))),
     __param(2, (0, common_1.Query)('username')),
@@ -267,6 +440,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getUserList", null);
 exports.UserController = UserController = __decorate([
+    (0, swagger_1.ApiTags)('用户管理'),
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);
