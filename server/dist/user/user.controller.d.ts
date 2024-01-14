@@ -5,4 +5,5 @@ export declare class UserController {
     constructor(userService: UserService);
     register(registerUser: RegisterUserDto): Promise<"注册成功" | "注册失败">;
     captcha(address: string): Promise<string>;
+    initData(): Promise<string>;
 }

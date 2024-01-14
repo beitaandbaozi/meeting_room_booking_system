@@ -18,6 +18,8 @@ const typeorm_2 = require("typeorm");
 const redis_service_1 = require("../redis/redis.service");
 const utils_1 = require("../utils");
 const email_service_1 = require("../email/email.service");
+const role_entity_1 = require("./entities/role.entity");
+const permission_entity_1 = require("./entities/permission.entity");
 let UserService = UserService_1 = class UserService {
     constructor() {
         this.logger = new common_1.Logger();
@@ -60,12 +62,51 @@ let UserService = UserService_1 = class UserService {
         });
         return '发送成功';
     }
+    async initData() {
+        const user1 = new user_entity_1.User();
+        user1.username = 'zhangsan';
+        user1.password = (0, utils_1.md5)('111111');
+        user1.email = 'xxx@xx.com';
+        user1.isAdmin = true;
+        user1.nickName = '张三';
+        user1.phoneNumber = '13233323333';
+        const user2 = new user_entity_1.User();
+        user2.username = 'lisi';
+        user2.password = (0, utils_1.md5)('222222');
+        user2.email = 'yy@yy.com';
+        user2.nickName = '李四';
+        const role1 = new role_entity_1.Role();
+        role1.name = '管理员';
+        const role2 = new role_entity_1.Role();
+        role2.name = '普通用户';
+        const permission1 = new permission_entity_1.Permission();
+        permission1.code = 'ccc';
+        permission1.description = '访问 ccc 接口';
+        const permission2 = new permission_entity_1.Permission();
+        permission2.code = 'ddd';
+        permission2.description = '访问 ddd 接口';
+        user1.roles = [role1];
+        user2.roles = [role2];
+        role1.permissions = [permission1, permission2];
+        role2.permissions = [permission1];
+        await this.permissionRepository.save([permission1, permission2]);
+        await this.roleRepository.save([role1, role2]);
+        await this.userRepository.save([user1, user2]);
+    }
 };
 exports.UserService = UserService;
 __decorate([
     (0, typeorm_1.InjectRepository)(user_entity_1.User),
     __metadata("design:type", typeorm_2.Repository)
 ], UserService.prototype, "userRepository", void 0);
+__decorate([
+    (0, typeorm_1.InjectRepository)(role_entity_1.Role),
+    __metadata("design:type", typeorm_2.Repository)
+], UserService.prototype, "roleRepository", void 0);
+__decorate([
+    (0, typeorm_1.InjectRepository)(permission_entity_1.Permission),
+    __metadata("design:type", typeorm_2.Repository)
+], UserService.prototype, "permissionRepository", void 0);
 __decorate([
     (0, common_1.Inject)(redis_service_1.RedisService),
     __metadata("design:type", redis_service_1.RedisService)

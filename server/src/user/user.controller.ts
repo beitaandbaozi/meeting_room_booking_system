@@ -26,4 +26,11 @@ export class UserController {
   async captcha(@Query('address') address: string) {
     return this.userService.captcha(address);
   }
+
+  // todo 初始化数据（测试）
+  @Get('init-data')
+  async initData() {
+    await this.userService.initData();
+    return 'done';
+  }
 }
