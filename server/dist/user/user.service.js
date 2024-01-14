@@ -20,6 +20,7 @@ const utils_1 = require("../utils");
 const email_service_1 = require("../email/email.service");
 const role_entity_1 = require("./entities/role.entity");
 const permission_entity_1 = require("./entities/permission.entity");
+const login_user_vo_1 = require("./vo/login-user.vo");
 let UserService = UserService_1 = class UserService {
     constructor() {
         this.logger = new common_1.Logger();
@@ -92,6 +93,66 @@ let UserService = UserService_1 = class UserService {
         await this.permissionRepository.save([permission1, permission2]);
         await this.roleRepository.save([role1, role2]);
         await this.userRepository.save([user1, user2]);
+    }
+    async login(loginUserDto, isAdmin) {
+        const user = await this.userRepository.findOne({
+            where: {
+                username: loginUserDto.username,
+                isAdmin,
+            },
+            relations: ['roles', 'roles.permissions'],
+        });
+        if (!user) {
+            throw new common_1.HttpException('用户不存在', common_1.HttpStatus.BAD_REQUEST);
+        }
+        if (user.password !== (0, utils_1.md5)(loginUserDto.password)) {
+            throw new common_1.HttpException('密码错误', common_1.HttpStatus.BAD_REQUEST);
+        }
+        const vo = new login_user_vo_1.LoginUserVo();
+        vo.userInfo = {
+            id: user.id,
+            username: user.username,
+            nickName: user.nickName,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            headPic: user.headPic,
+            createTime: user.createTime.getTime(),
+            isFrozen: user.isFrozen,
+            isAdmin: user.isAdmin,
+            roles: user.roles.map((item) => item.name),
+            permissions: user.roles.reduce((arr, item) => {
+                item.permissions.forEach((permission) => {
+                    if (arr.indexOf(permission) === -1) {
+                        arr.push(permission);
+                    }
+                });
+                return arr;
+            }, []),
+        };
+        return vo;
+    }
+    async findUserById(userId, isAdmin) {
+        const user = await this.userRepository.findOne({
+            where: {
+                id: userId,
+                isAdmin,
+            },
+            relations: ['roles', 'roles.permissions'],
+        });
+        return {
+            id: user.id,
+            username: user.username,
+            isAdmin: user.isAdmin,
+            roles: user.roles.map((item) => item.name),
+            permissions: user.roles.reduce((arr, item) => {
+                item.permissions.forEach((permission) => {
+                    if (arr.indexOf(permission) === -1) {
+                        arr.push(permission);
+                    }
+                });
+                return arr;
+            }, []),
+        };
     }
 };
 exports.UserService = UserService;

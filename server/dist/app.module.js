@@ -18,12 +18,25 @@ const permission_entity_1 = require("./user/entities/permission.entity");
 const redis_module_1 = require("./redis/redis.module");
 const email_module_1 = require("./email/email.module");
 const config_1 = require("@nestjs/config");
+const jwt_1 = require("@nestjs/jwt");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            jwt_1.JwtModule.registerAsync({
+                global: true,
+                useFactory(configService) {
+                    return {
+                        secret: configService.get('jwt_secret'),
+                        signOptions: {
+                            expiresIn: '30m',
+                        },
+                    };
+                },
+                inject: [config_1.ConfigService],
+            }),
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
                 envFilePath: 'src/.env',
