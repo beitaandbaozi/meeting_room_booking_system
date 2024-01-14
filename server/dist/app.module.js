@@ -17,27 +17,37 @@ const role_entity_1 = require("./user/entities/role.entity");
 const permission_entity_1 = require("./user/entities/permission.entity");
 const redis_module_1 = require("./redis/redis.module");
 const email_module_1 = require("./email/email.module");
+const config_1 = require("@nestjs/config");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forRoot({
-                type: 'mysql',
-                host: 'localhost',
-                port: 3306,
-                username: 'root',
-                password: '203036416',
-                database: 'meeting_room_booking_system',
-                synchronize: true,
-                logging: true,
-                entities: [user_entity_1.User, role_entity_1.Role, permission_entity_1.Permission],
-                poolSize: 10,
-                connectorPackage: 'mysql2',
-                extra: {
-                    authPlugin: 'sha256_password',
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+                envFilePath: 'src/.env',
+            }),
+            typeorm_1.TypeOrmModule.forRootAsync({
+                useFactory(configService) {
+                    return {
+                        type: 'mysql',
+                        host: configService.get('mysql_server_host'),
+                        port: configService.get('mysql_server_port'),
+                        username: configService.get('mysql_server_username'),
+                        password: configService.get('mysql_server_password'),
+                        database: configService.get('mysql_server_database'),
+                        synchronize: true,
+                        logging: true,
+                        entities: [user_entity_1.User, role_entity_1.Role, permission_entity_1.Permission],
+                        poolSize: 10,
+                        connectorPackage: 'mysql2',
+                        extra: {
+                            authPlugin: 'sha256_password',
+                        },
+                    };
                 },
+                inject: [config_1.ConfigService],
             }),
             user_module_1.UserModule,
             redis_module_1.RedisModule,

@@ -11,16 +11,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmailService = void 0;
 const common_1 = require("@nestjs/common");
+const config_1 = require("@nestjs/config");
 const nodemailer_1 = require("nodemailer");
 let EmailService = class EmailService {
-    constructor() {
+    constructor(configService) {
+        this.configService = configService;
         this.transporter = (0, nodemailer_1.createTransport)({
-            host: 'smtp.qq.com',
-            port: 587,
+            host: this.configService.get('nodemailer_host'),
+            port: this.configService.get('nodemailer_port'),
             secure: false,
             auth: {
-                user: '2280496040@qq.com',
-                pass: 'kttksbtrvaawdjbi',
+                user: this.configService.get('nodemailer_auth_user'),
+                pass: this.configService.get('nodemailer_auth_pass'),
             },
         });
     }
@@ -28,7 +30,7 @@ let EmailService = class EmailService {
         await this.transporter.sendMail({
             from: {
                 name: '会议室预定系统',
-                address: '2280496040@qq.com',
+                address: this.configService.get('nodemailer_auth_user'),
             },
             to,
             subject,
@@ -39,6 +41,6 @@ let EmailService = class EmailService {
 exports.EmailService = EmailService;
 exports.EmailService = EmailService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [config_1.ConfigService])
 ], EmailService);
 //# sourceMappingURL=email.service.js.map

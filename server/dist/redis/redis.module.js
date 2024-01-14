@@ -10,6 +10,7 @@ exports.RedisModule = void 0;
 const common_1 = require("@nestjs/common");
 const redis_service_1 = require("./redis.service");
 const redis_1 = require("redis");
+const config_1 = require("@nestjs/config");
 let RedisModule = class RedisModule {
 };
 exports.RedisModule = RedisModule;
@@ -20,17 +21,18 @@ exports.RedisModule = RedisModule = __decorate([
             redis_service_1.RedisService,
             {
                 provide: 'REDIS_CLIENT',
-                async useFactory() {
+                async useFactory(configService) {
                     const client = (0, redis_1.createClient)({
                         socket: {
-                            host: 'localhost',
-                            port: 6379,
+                            host: configService.get('redis_server_host'),
+                            port: configService.get('redis_server_port'),
                         },
-                        database: 1,
+                        database: configService.get('redis_server_db'),
                     });
                     await client.connect();
                     return client;
                 },
+                inject: [config_1.ConfigService],
             },
         ],
         exports: [redis_service_1.RedisService],
