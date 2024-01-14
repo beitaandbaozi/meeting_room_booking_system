@@ -7,7 +7,7 @@ import { User } from './user/entities/user.entity';
 import { Role } from './user/entities/role.entity';
 import { Permission } from './user/entities/permission.entity';
 import { RedisModule } from './redis/redis.module';
-
+import { EmailModule } from './email/email.module';
 @Module({
   imports: [
     // todo 数据库设置
@@ -29,6 +29,7 @@ import { RedisModule } from './redis/redis.module';
     }),
     UserModule,
     RedisModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [AppService],
