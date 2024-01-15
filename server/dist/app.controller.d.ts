@@ -3,6 +3,6 @@ export declare class AppController {
     private readonly appService;
     constructor(appService: AppService);
     getHello(): string;
-    aaaa(): string;
+    aaaa(username: string, userinfo: any): string;
     bbbb(): string;
 }
