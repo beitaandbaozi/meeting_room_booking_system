@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { FormatResponseInterceptor } from './interceptor/format-response.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -9,6 +10,8 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   // todo config 配置
   const configService = app.get(ConfigService);
+  // todo 全局启用 interceptor
+  app.useGlobalInterceptors(new FormatResponseInterceptor());
   await app.listen(configService.get('nest_server_port'));
 }
 bootstrap();
