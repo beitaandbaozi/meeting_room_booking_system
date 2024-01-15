@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FormatResponseInterceptor } from './interceptor/format-response.interceptor';
+import { InvokeRecordInterceptor } from './interceptor/invoke-record.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,6 +13,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   // todo 全局启用 interceptor
   app.useGlobalInterceptors(new FormatResponseInterceptor());
+  app.useGlobalInterceptors(new InvokeRecordInterceptor());
   await app.listen(configService.get('nest_server_port'));
 }
 bootstrap();
