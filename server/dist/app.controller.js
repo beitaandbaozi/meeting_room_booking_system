@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
 const app_service_1 = require("./app.service");
+const custom_decorator_1 = require("./custom.decorator");
 let AppController = class AppController {
     constructor(appService) {
         this.appService = appService;
@@ -35,8 +36,8 @@ __decorate([
 ], AppController.prototype, "getHello", null);
 __decorate([
     (0, common_1.Get)('aaa'),
-    (0, common_1.SetMetadata)('require-login', true),
-    (0, common_1.SetMetadata)('require-permission', ['ddd']),
+    (0, custom_decorator_1.RequireLogin)(),
+    (0, custom_decorator_1.RequirePermission)('ddd'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)

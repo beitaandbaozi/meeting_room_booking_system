@@ -1,5 +1,6 @@
 import { Controller, Get, SetMetadata } from '@nestjs/common';
 import { AppService } from './app.service';
+import { RequireLogin, RequirePermission } from './custom.decorator';
 
 @Controller()
 export class AppController {
@@ -11,8 +12,8 @@ export class AppController {
   }
   // todo loginGuard测试
   @Get('aaa')
-  @SetMetadata('require-login', true)
-  @SetMetadata('require-permission', ['ddd'])
+  @RequireLogin()
+  @RequirePermission('ddd')
   aaaa() {
     return 'aaa';
   }
