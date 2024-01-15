@@ -19,6 +19,8 @@ const redis_module_1 = require("./redis/redis.module");
 const email_module_1 = require("./email/email.module");
 const config_1 = require("@nestjs/config");
 const jwt_1 = require("@nestjs/jwt");
+const core_1 = require("@nestjs/core");
+const login_guard_1 = require("./guard/login.guard");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -67,7 +69,13 @@ exports.AppModule = AppModule = __decorate([
             email_module_1.EmailModule,
         ],
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        providers: [
+            app_service_1.AppService,
+            {
+                provide: core_1.APP_GUARD,
+                useClass: login_guard_1.LoginGuard,
+            },
+        ],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

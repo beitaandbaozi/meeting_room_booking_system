@@ -19,6 +19,12 @@ let AppController = class AppController {
     getHello() {
         return this.appService.getHello();
     }
+    aaaa() {
+        return 'aaa';
+    }
+    bbbb() {
+        return 'bbbb';
+    }
 };
 exports.AppController = AppController;
 __decorate([
@@ -27,6 +33,19 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", String)
 ], AppController.prototype, "getHello", null);
+__decorate([
+    (0, common_1.Get)('aaa'),
+    (0, common_1.SetMetadata)('require-login', true),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "aaaa", null);
+__decorate([
+    (0, common_1.Get)('bbb'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "bbbb", null);
 exports.AppController = AppController = __decorate([
     (0, common_1.Controller)(),
     __metadata("design:paramtypes", [app_service_1.AppService])
