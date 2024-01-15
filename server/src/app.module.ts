@@ -12,6 +12,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { LoginGuard } from './guard/login.guard';
+import { PermissionGuard } from './guard/permission.guard';
 @Module({
   imports: [
     // todo jwt配置
@@ -65,6 +66,11 @@ import { LoginGuard } from './guard/login.guard';
     {
       provide: APP_GUARD,
       useClass: LoginGuard,
+    },
+    // todo 全局使用 PermissionGuard
+    {
+      provide: APP_GUARD,
+      useClass: PermissionGuard,
     },
   ],
 })

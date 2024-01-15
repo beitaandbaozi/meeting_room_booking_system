@@ -12,6 +12,7 @@ export class AppController {
   // todo loginGuard测试
   @Get('aaa')
   @SetMetadata('require-login', true)
+  @SetMetadata('require-permission', ['ddd'])
   aaaa() {
     return 'aaa';
   }

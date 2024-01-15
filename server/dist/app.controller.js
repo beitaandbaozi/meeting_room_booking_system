@@ -36,6 +36,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)('aaa'),
     (0, common_1.SetMetadata)('require-login', true),
+    (0, common_1.SetMetadata)('require-permission', ['ddd']),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
