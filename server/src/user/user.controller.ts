@@ -11,6 +11,7 @@ import {
   UnauthorizedException,
   ParseIntPipe,
   BadRequestException,
+  DefaultValuePipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterUserDto } from './dto/register-user.dto';
@@ -209,9 +210,13 @@ export class UserController {
   // todo 用户列表接口
   @Get('list')
   async list(
-    @Query('pageNo', generateParseIntPipe('pageNo'))
+    @Query('pageNo', new DefaultValuePipe(1), generateParseIntPipe('pageNo'))
     pageNo: number,
-    @Query('pageSize', generateParseIntPipe('pageSize'))
+    @Query(
+      'pageSize',
+      new DefaultValuePipe(10),
+      generateParseIntPipe('pageSize'),
+    )
     pageSize: number,
   ) {
     return await this.userService.findUsersByPage(pageNo, pageSize);

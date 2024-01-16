@@ -239,6 +239,16 @@ let UserService = UserService_1 = class UserService {
     async findUsersByPage(pageNo, pageSize) {
         const skipCount = (pageNo - 1) * pageSize;
         const [users, totalCount] = await this.userRepository.findAndCount({
+            select: [
+                'id',
+                'username',
+                'nickName',
+                'email',
+                'phoneNumber',
+                'isFrozen',
+                'headPic',
+                'createTime',
+            ],
             skip: skipCount,
             take: pageSize,
         });

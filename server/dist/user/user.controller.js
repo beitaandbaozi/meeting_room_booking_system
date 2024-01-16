@@ -246,8 +246,8 @@ __decorate([
 ], UserController.prototype, "freeze", null);
 __decorate([
     (0, common_1.Get)('list'),
-    __param(0, (0, common_1.Query)('pageNo', (0, utils_1.generateParseIntPipe)('pageNo'))),
-    __param(1, (0, common_1.Query)('pageSize', (0, utils_1.generateParseIntPipe)('pageSize'))),
+    __param(0, (0, common_1.Query)('pageNo', new common_1.DefaultValuePipe(1), (0, utils_1.generateParseIntPipe)('pageNo'))),
+    __param(1, (0, common_1.Query)('pageSize', new common_1.DefaultValuePipe(10), (0, utils_1.generateParseIntPipe)('pageSize'))),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Number]),
     __metadata("design:returntype", Promise)
