@@ -236,6 +236,17 @@ let UserService = UserService_1 = class UserService {
         user.isFrozen = true;
         await this.userRepository.save(user);
     }
+    async findUsersByPage(pageNo, pageSize) {
+        const skipCount = (pageNo - 1) * pageSize;
+        const [users, totalCount] = await this.userRepository.findAndCount({
+            skip: skipCount,
+            take: pageSize,
+        });
+        return {
+            users,
+            totalCount,
+        };
+    }
 };
 exports.UserService = UserService;
 __decorate([

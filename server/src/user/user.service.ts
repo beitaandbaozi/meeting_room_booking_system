@@ -294,4 +294,19 @@ export class UserService {
     user.isFrozen = true;
     await this.userRepository.save(user);
   }
+
+  // todo 用户列表
+  async findUsersByPage(pageNo: number, pageSize: number) {
+    const skipCount = (pageNo - 1) * pageSize;
+
+    const [users, totalCount] = await this.userRepository.findAndCount({
+      skip: skipCount,
+      take: pageSize,
+    });
+
+    return {
+      users,
+      totalCount,
+    };
+  }
 }

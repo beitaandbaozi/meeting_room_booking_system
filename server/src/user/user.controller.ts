@@ -9,6 +9,8 @@ import {
   Query,
   Inject,
   UnauthorizedException,
+  ParseIntPipe,
+  BadRequestException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterUserDto } from './dto/register-user.dto';
@@ -202,5 +204,29 @@ export class UserController {
   async freeze(@Query('id') userId: number) {
     await this.userService.freezeUserById(userId);
     return 'success';
+  }
+  // todo 用户列表接口
+  @Get('list')
+  async list(
+    @Query(
+      'pageNo',
+      new ParseIntPipe({
+        exceptionFactory() {
+          throw new BadRequestException('pageNo 应该传数字');
+        },
+      }),
+    )
+    pageNo: number,
+    @Query(
+      'pageSize',
+      new ParseIntPipe({
+        exceptionFactory() {
+          throw new BadRequestException('pageSize 应该传数字');
+        },
+      }),
+    )
+    pageSize: number,
+  ) {
+    return await this.userService.findUsersByPage(pageNo, pageSize);
   }
 }

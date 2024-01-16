@@ -28,4 +28,8 @@ export declare class UserService {
     updateUserInfo(userId: number, updateUserDto: UpdateUserDto): Promise<string>;
     updateCaptcha(address: string): Promise<string>;
     freezeUserById(id: number): Promise<void>;
+    findUsersByPage(pageNo: number, pageSize: number): Promise<{
+        users: User[];
+        totalCount: number;
+    }>;
 }

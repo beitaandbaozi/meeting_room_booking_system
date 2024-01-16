@@ -135,6 +135,9 @@ let UserController = class UserController {
         await this.userService.freezeUserById(userId);
         return 'success';
     }
+    async list(pageNo, pageSize) {
+        return await this.userService.findUsersByPage(pageNo, pageSize);
+    }
 };
 exports.UserController = UserController;
 __decorate([
@@ -240,6 +243,22 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "freeze", null);
+__decorate([
+    (0, common_1.Get)('list'),
+    __param(0, (0, common_1.Query)('pageNo', new common_1.ParseIntPipe({
+        exceptionFactory() {
+            throw new common_1.BadRequestException('pageNo 应该传数字');
+        },
+    }))),
+    __param(1, (0, common_1.Query)('pageSize', new common_1.ParseIntPipe({
+        exceptionFactory() {
+            throw new common_1.BadRequestException('pageSize 应该传数字');
+        },
+    }))),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "list", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])
