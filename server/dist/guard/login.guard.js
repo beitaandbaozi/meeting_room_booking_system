@@ -13,6 +13,7 @@ exports.LoginGuard = void 0;
 const common_1 = require("@nestjs/common");
 const core_1 = require("@nestjs/core");
 const jwt_1 = require("@nestjs/jwt");
+const unlogin_filter_1 = require("../filter/unlogin.filter");
 let LoginGuard = class LoginGuard {
     canActivate(context) {
         const isRequireLogin = this.reflector.getAllAndOverride('require-login', [
@@ -23,8 +24,9 @@ let LoginGuard = class LoginGuard {
             return true;
         const request = context.switchToHttp().getRequest();
         const authorization = request.headers.authorization;
-        if (!authorization)
-            throw new common_1.UnauthorizedException('用户未登录😷');
+        if (!authorization) {
+            throw new unlogin_filter_1.UnLoginException('用户未登录😷');
+        }
         try {
             const token = authorization.split(' ')[1];
             const data = this.jwtService.verify(token);
@@ -37,7 +39,7 @@ let LoginGuard = class LoginGuard {
             return true;
         }
         catch (error) {
-            throw new common_1.UnauthorizedException('token失效,请重新登录🫡');
+            throw new unlogin_filter_1.UnLoginException('token失效,请重新登录🫡');
         }
     }
 };
