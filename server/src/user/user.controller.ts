@@ -177,4 +177,9 @@ export class UserController {
     console.log(passwordDto);
     return 'success';
   }
+  // todo 修改密码邮箱发送
+  @Get('update_password/captcha')
+  async updatePasswordCaptcha(@Query('address') address: string) {
+    return await this.userService.updatePasswordCaptcha(address);
+  }
 }

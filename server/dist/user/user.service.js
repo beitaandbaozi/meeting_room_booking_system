@@ -183,6 +183,16 @@ let UserService = UserService_1 = class UserService {
             return '密码修改失败';
         }
     }
+    async updatePasswordCaptcha(address) {
+        const code = Math.random().toString().slice(2, 8);
+        await this.redisService.set(`update_password_captcha_${address}`, code, 10 * 60);
+        await this.emailService.sendMail({
+            to: address,
+            subject: '更改密码验证码',
+            html: `<p>你的更改密码验证码是 ${code}</p>`,
+        });
+        return '发送成功';
+    }
 };
 exports.UserService = UserService;
 __decorate([

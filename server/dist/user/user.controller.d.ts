@@ -27,4 +27,5 @@ export declare class UserController {
     }>;
     info(userId: number): Promise<UserDetailVo>;
     updatePassword(userId: number, passwordDto: UpdateUserPasswordDto): Promise<string>;
+    updatePasswordCaptcha(address: string): Promise<string>;
 }
