@@ -31,4 +31,5 @@ export declare class UserController {
     updatePasswordCaptcha(address: string): Promise<string>;
     updateUserInfo(userId: number, updateUserDto: UpdateUserDto): Promise<string>;
     updateCaptcha(address: string): Promise<string>;
+    freeze(userId: number): Promise<string>;
 }

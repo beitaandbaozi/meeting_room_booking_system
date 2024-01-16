@@ -229,6 +229,13 @@ let UserService = UserService_1 = class UserService {
         });
         return '发送成功';
     }
+    async freezeUserById(id) {
+        const user = await this.userRepository.findOneBy({
+            id,
+        });
+        user.isFrozen = true;
+        await this.userRepository.save(user);
+    }
 };
 exports.UserService = UserService;
 __decorate([

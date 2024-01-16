@@ -197,4 +197,10 @@ export class UserController {
   async updateCaptcha(@Query('address') address: string) {
     return await this.userService.updateCaptcha(address);
   }
+  // todo 冻结用户
+  @Get('freeze')
+  async freeze(@Query('id') userId: number) {
+    await this.userService.freezeUserById(userId);
+    return 'success';
+  }
 }

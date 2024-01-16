@@ -285,4 +285,13 @@ export class UserService {
     });
     return '发送成功';
   }
+
+  // todo 冻结用户
+  async freezeUserById(id: number) {
+    const user = await this.userRepository.findOneBy({
+      id,
+    });
+    user.isFrozen = true;
+    await this.userRepository.save(user);
+  }
 }

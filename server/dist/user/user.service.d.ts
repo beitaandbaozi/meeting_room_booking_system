@@ -27,4 +27,5 @@ export declare class UserService {
     updatePasswordCaptcha(address: string): Promise<string>;
     updateUserInfo(userId: number, updateUserDto: UpdateUserDto): Promise<string>;
     updateCaptcha(address: string): Promise<string>;
+    freezeUserById(id: number): Promise<void>;
 }
