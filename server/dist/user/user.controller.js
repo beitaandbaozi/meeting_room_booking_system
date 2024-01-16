@@ -22,6 +22,7 @@ const config_1 = require("@nestjs/config");
 const custom_decorator_1 = require("../custom.decorator");
 const user_info_vo_1 = require("./vo/user-info.vo");
 const update_user_password_dto_1 = require("./dto/update-user-password.dto");
+const update_user_dto_1 = require("./dto/update-user.dto");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -124,6 +125,9 @@ let UserController = class UserController {
     async updatePasswordCaptcha(address) {
         return await this.userService.updatePasswordCaptcha(address);
     }
+    async updateUserInfo(userId, updateUserDto) {
+        return await this.userService.updateUserInfo(userId, updateUserDto);
+    }
 };
 exports.UserController = UserController;
 __decorate([
@@ -206,6 +210,15 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updatePasswordCaptcha", null);
+__decorate([
+    (0, common_1.Post)(['update', 'admin/update']),
+    (0, custom_decorator_1.RequireLogin)(),
+    __param(0, (0, custom_decorator_1.UserInfo)('userId')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, update_user_dto_1.UpdateUserDto]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "updateUserInfo", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])
