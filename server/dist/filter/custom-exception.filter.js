@@ -12,11 +12,14 @@ let CustomExceptionFilter = class CustomExceptionFilter {
     catch(exception, host) {
         const response = host.switchToHttp().getResponse();
         response.statusCode = exception.getStatus();
+        const res = exception.getResponse();
         response
             .json({
             code: exception.getStatus(),
-            message: 'fail😭',
-            data: exception.message,
+            message: 'fail',
+            data: res && res?.message?.join
+                ? res?.message?.join(',')
+                : exception.message,
         })
             .end();
     }
