@@ -1,3 +1,4 @@
+import { User } from './entities/user.entity';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { LoginUserVo } from './vo/login-user.vo';
@@ -19,4 +20,5 @@ export declare class UserService {
         roles: string[];
         permissions: any[];
     }>;
+    findUserDetailById(userId: number): Promise<User>;
 }

@@ -154,6 +154,14 @@ let UserService = UserService_1 = class UserService {
             }, []),
         };
     }
+    async findUserDetailById(userId) {
+        const user = await this.userRepository.findOne({
+            where: {
+                id: userId,
+            },
+        });
+        return user;
+    }
 };
 exports.UserService = UserService;
 __decorate([
