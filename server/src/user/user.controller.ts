@@ -21,6 +21,7 @@ import { RequireLogin, UserInfo } from 'src/custom.decorator';
 import { UserDetailVo } from './vo/user-info.vo';
 import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { generateParseIntPipe } from 'src/utils';
 
 @Controller('user')
 export class UserController {
@@ -208,23 +209,9 @@ export class UserController {
   // todo 用户列表接口
   @Get('list')
   async list(
-    @Query(
-      'pageNo',
-      new ParseIntPipe({
-        exceptionFactory() {
-          throw new BadRequestException('pageNo 应该传数字');
-        },
-      }),
-    )
+    @Query('pageNo', generateParseIntPipe('pageNo'))
     pageNo: number,
-    @Query(
-      'pageSize',
-      new ParseIntPipe({
-        exceptionFactory() {
-          throw new BadRequestException('pageSize 应该传数字');
-        },
-      }),
-    )
+    @Query('pageSize', generateParseIntPipe('pageSize'))
     pageSize: number,
   ) {
     return await this.userService.findUsersByPage(pageNo, pageSize);

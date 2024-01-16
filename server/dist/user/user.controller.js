@@ -23,6 +23,7 @@ const custom_decorator_1 = require("../custom.decorator");
 const user_info_vo_1 = require("./vo/user-info.vo");
 const update_user_password_dto_1 = require("./dto/update-user-password.dto");
 const update_user_dto_1 = require("./dto/update-user.dto");
+const utils_1 = require("../utils");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -245,16 +246,8 @@ __decorate([
 ], UserController.prototype, "freeze", null);
 __decorate([
     (0, common_1.Get)('list'),
-    __param(0, (0, common_1.Query)('pageNo', new common_1.ParseIntPipe({
-        exceptionFactory() {
-            throw new common_1.BadRequestException('pageNo 应该传数字');
-        },
-    }))),
-    __param(1, (0, common_1.Query)('pageSize', new common_1.ParseIntPipe({
-        exceptionFactory() {
-            throw new common_1.BadRequestException('pageSize 应该传数字');
-        },
-    }))),
+    __param(0, (0, common_1.Query)('pageNo', (0, utils_1.generateParseIntPipe)('pageNo'))),
+    __param(1, (0, common_1.Query)('pageSize', (0, utils_1.generateParseIntPipe)('pageSize'))),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Number]),
     __metadata("design:returntype", Promise)
