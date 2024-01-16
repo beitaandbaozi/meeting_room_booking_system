@@ -236,8 +236,18 @@ let UserService = UserService_1 = class UserService {
         user.isFrozen = true;
         await this.userRepository.save(user);
     }
-    async findUsersByPage(pageNo, pageSize) {
+    async findUsersByPage(username, nickName, email, pageNo, pageSize) {
         const skipCount = (pageNo - 1) * pageSize;
+        const condition = {};
+        if (username) {
+            condition.username = (0, typeorm_2.Like)(`%${username}%`);
+        }
+        if (nickName) {
+            condition.nickName = (0, typeorm_2.Like)(`%${nickName}%`);
+        }
+        if (email) {
+            condition.email = (0, typeorm_2.Like)(`%${email}%`);
+        }
         const [users, totalCount] = await this.userRepository.findAndCount({
             select: [
                 'id',
@@ -251,6 +261,7 @@ let UserService = UserService_1 = class UserService {
             ],
             skip: skipCount,
             take: pageSize,
+            where: condition,
         });
         return {
             users,

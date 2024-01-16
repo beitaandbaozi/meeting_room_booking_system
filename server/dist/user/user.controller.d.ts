@@ -32,7 +32,7 @@ export declare class UserController {
     updateUserInfo(userId: number, updateUserDto: UpdateUserDto): Promise<string>;
     updateCaptcha(address: string): Promise<string>;
     freeze(userId: number): Promise<string>;
-    list(pageNo: number, pageSize: number): Promise<{
+    list(pageNo: number, pageSize: number, username: string, nickName: string, email: string): Promise<{
         users: import("./entities/user.entity").User[];
         totalCount: number;
     }>;

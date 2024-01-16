@@ -136,8 +136,8 @@ let UserController = class UserController {
         await this.userService.freezeUserById(userId);
         return 'success';
     }
-    async list(pageNo, pageSize) {
-        return await this.userService.findUsersByPage(pageNo, pageSize);
+    async list(pageNo, pageSize, username, nickName, email) {
+        return await this.userService.findUsersByPage(username, nickName, email, pageNo, pageSize);
     }
 };
 exports.UserController = UserController;
@@ -248,8 +248,11 @@ __decorate([
     (0, common_1.Get)('list'),
     __param(0, (0, common_1.Query)('pageNo', new common_1.DefaultValuePipe(1), (0, utils_1.generateParseIntPipe)('pageNo'))),
     __param(1, (0, common_1.Query)('pageSize', new common_1.DefaultValuePipe(10), (0, utils_1.generateParseIntPipe)('pageSize'))),
+    __param(2, (0, common_1.Query)('username')),
+    __param(3, (0, common_1.Query)('nickName')),
+    __param(4, (0, common_1.Query)('email')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:paramtypes", [Number, Number, String, String, String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "list", null);
 exports.UserController = UserController = __decorate([

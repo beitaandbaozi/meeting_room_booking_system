@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { RedisService } from 'src/redis/redis.service';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { md5 } from 'src/utils';
@@ -296,9 +296,24 @@ export class UserService {
   }
 
   // todo 用户列表
-  async findUsersByPage(pageNo: number, pageSize: number) {
+  async findUsersByPage(
+    username: string,
+    nickName: string,
+    email: string,
+    pageNo: number,
+    pageSize: number,
+  ) {
     const skipCount = (pageNo - 1) * pageSize;
-
+    const condition: Record<string, any> = {};
+    if (username) {
+      condition.username = Like(`%${username}%`);
+    }
+    if (nickName) {
+      condition.nickName = Like(`%${nickName}%`);
+    }
+    if (email) {
+      condition.email = Like(`%${email}%`);
+    }
     const [users, totalCount] = await this.userRepository.findAndCount({
       select: [
         'id',
@@ -312,6 +327,7 @@ export class UserService {
       ],
       skip: skipCount,
       take: pageSize,
+      where: condition,
     });
 
     return {
