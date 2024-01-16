@@ -219,6 +219,16 @@ let UserService = UserService_1 = class UserService {
             return '用户信息修改成功';
         }
     }
+    async updateCaptcha(address) {
+        const code = Math.random().toString().slice(2, 8);
+        await this.redisService.set(`update_user_captcha_${address}`, code, 10 * 60);
+        await this.emailService.sendMail({
+            to: address,
+            subject: '更改用户信息验证码',
+            html: `<p>你的验证码是 ${code}</p>`,
+        });
+        return '发送成功';
+    }
 };
 exports.UserService = UserService;
 __decorate([

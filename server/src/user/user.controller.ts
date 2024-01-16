@@ -192,4 +192,9 @@ export class UserController {
   ) {
     return await this.userService.updateUserInfo(userId, updateUserDto);
   }
+  // todo 修改个人信息邮箱发送
+  @Get('update/captcha')
+  async updateCaptcha(@Query('address') address: string) {
+    return await this.userService.updateCaptcha(address);
+  }
 }

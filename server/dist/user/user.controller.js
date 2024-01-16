@@ -128,6 +128,9 @@ let UserController = class UserController {
     async updateUserInfo(userId, updateUserDto) {
         return await this.userService.updateUserInfo(userId, updateUserDto);
     }
+    async updateCaptcha(address) {
+        return await this.userService.updateCaptcha(address);
+    }
 };
 exports.UserController = UserController;
 __decorate([
@@ -219,6 +222,13 @@ __decorate([
     __metadata("design:paramtypes", [Number, update_user_dto_1.UpdateUserDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updateUserInfo", null);
+__decorate([
+    (0, common_1.Get)('update/captcha'),
+    __param(0, (0, common_1.Query)('address')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "updateCaptcha", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])
