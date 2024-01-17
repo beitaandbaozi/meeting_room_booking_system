@@ -9,35 +9,53 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateUserDto = void 0;
+exports.UserListVo = void 0;
 const swagger_1 = require("@nestjs/swagger");
-const class_validator_1 = require("class-validator");
-class UpdateUserDto {
+class User {
 }
-exports.UpdateUserDto = UpdateUserDto;
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", Number)
+], User.prototype, "id", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
-], UpdateUserDto.prototype, "headPic", void 0);
+], User.prototype, "username", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
-], UpdateUserDto.prototype, "nickName", void 0);
+], User.prototype, "nickName", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
-    (0, class_validator_1.IsNotEmpty)({
-        message: '邮箱不能为空',
+    __metadata("design:type", String)
+], User.prototype, "email", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], User.prototype, "phoneNumber", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", Boolean)
+], User.prototype, "isFrozen", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], User.prototype, "headPic", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", Date)
+], User.prototype, "createTime", void 0);
+class UserListVo {
+}
+exports.UserListVo = UserListVo;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        type: [User],
     }),
-    (0, class_validator_1.IsEmail)({}, {
-        message: '不是合法的邮箱格式',
-    }),
-    __metadata("design:type", String)
-], UpdateUserDto.prototype, "email", void 0);
+    __metadata("design:type", Array)
+], UserListVo.prototype, "users", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
-    (0, class_validator_1.IsNotEmpty)({
-        message: '验证码不能为空',
-    }),
-    __metadata("design:type", String)
-], UpdateUserDto.prototype, "captcha", void 0);
-//# sourceMappingURL=update-user.dto.js.map
+    __metadata("design:type", Number)
+], UserListVo.prototype, "totalCount", void 0);
+//# sourceMappingURL=user-list.vo.js.map

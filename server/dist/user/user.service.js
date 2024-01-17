@@ -21,6 +21,7 @@ const email_service_1 = require("../email/email.service");
 const role_entity_1 = require("./entities/role.entity");
 const permission_entity_1 = require("./entities/permission.entity");
 const login_user_vo_1 = require("./vo/login-user.vo");
+const user_list_vo_1 = require("./vo/user-list.vo");
 let UserService = UserService_1 = class UserService {
     constructor() {
         this.logger = new common_1.Logger();
@@ -263,10 +264,10 @@ let UserService = UserService_1 = class UserService {
             take: pageSize,
             where: condition,
         });
-        return {
-            users,
-            totalCount,
-        };
+        const vo = new user_list_vo_1.UserListVo();
+        vo.users = users;
+        vo.totalCount = totalCount;
+        return vo;
     }
 };
 exports.UserService = UserService;

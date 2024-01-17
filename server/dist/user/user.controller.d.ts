@@ -4,6 +4,8 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { UserDetailVo } from './vo/user-info.vo';
 import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { LoginUserVo } from './vo/login-user.vo';
+import { RefreshTokenVo } from './vo/refresh-token.vo';
 export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
@@ -12,12 +14,9 @@ export declare class UserController {
     register(registerUser: RegisterUserDto): Promise<"注册成功" | "注册失败">;
     captcha(address: string): Promise<string>;
     initData(): Promise<string>;
-    userLogin(loginUser: LoginUserDto): Promise<import("./vo/login-user.vo").LoginUserVo>;
-    adminLogin(loginUser: LoginUserDto): Promise<import("./vo/login-user.vo").LoginUserVo>;
-    _toRefresh(refreshToken: string): Promise<{
-        access_token: string;
-        refresh_token: string;
-    }>;
+    userLogin(loginUser: LoginUserDto): Promise<LoginUserVo>;
+    adminLogin(loginUser: LoginUserDto): Promise<LoginUserVo>;
+    _toRefresh(refreshToken: string): Promise<RefreshTokenVo>;
     refresh(refreshToken: string): Promise<{
         access_token: string;
         refresh_token: string;
@@ -32,8 +31,5 @@ export declare class UserController {
     updateUserInfo(userId: number, updateUserDto: UpdateUserDto): Promise<string>;
     updateCaptcha(address: string): Promise<string>;
     freeze(userId: number): Promise<string>;
-    list(pageNo: number, pageSize: number, username: string, nickName: string, email: string): Promise<{
-        users: import("./entities/user.entity").User[];
-        totalCount: number;
-    }>;
+    list(pageNo: number, pageSize: number, username: string, nickName: string, email: string): Promise<import("./vo/user-list.vo").UserListVo>;
 }

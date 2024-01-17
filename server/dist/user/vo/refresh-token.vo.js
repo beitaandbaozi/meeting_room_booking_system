@@ -9,37 +9,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateUserPasswordDto = void 0;
+exports.RefreshTokenVo = void 0;
 const swagger_1 = require("@nestjs/swagger");
-const class_validator_1 = require("class-validator");
-class UpdateUserPasswordDto {
+class RefreshTokenVo {
 }
-exports.UpdateUserPasswordDto = UpdateUserPasswordDto;
+exports.RefreshTokenVo = RefreshTokenVo;
 __decorate([
     (0, swagger_1.ApiProperty)(),
-    (0, class_validator_1.IsNotEmpty)({
-        message: '密码不能为空',
-    }),
-    (0, class_validator_1.MinLength)(6, {
-        message: '密码不能少于 6 位',
-    }),
     __metadata("design:type", String)
-], UpdateUserPasswordDto.prototype, "password", void 0);
+], RefreshTokenVo.prototype, "access_token", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
-    (0, class_validator_1.IsNotEmpty)({
-        message: '邮箱不能为空',
-    }),
-    (0, class_validator_1.IsEmail)({}, {
-        message: '不是合法的邮箱格式',
-    }),
     __metadata("design:type", String)
-], UpdateUserPasswordDto.prototype, "email", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)(),
-    (0, class_validator_1.IsNotEmpty)({
-        message: '验证码不能为空',
-    }),
-    __metadata("design:type", String)
-], UpdateUserPasswordDto.prototype, "captcha", void 0);
-//# sourceMappingURL=update-user-password.dto.js.map
+], RefreshTokenVo.prototype, "refresh_token", void 0);
+//# sourceMappingURL=refresh-token.vo.js.map

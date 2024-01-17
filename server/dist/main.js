@@ -8,6 +8,7 @@ const format_response_interceptor_1 = require("./interceptor/format-response.int
 const invoke_record_interceptor_1 = require("./interceptor/invoke-record.interceptor");
 const unlogin_filter_1 = require("./filter/unlogin.filter");
 const custom_exception_filter_1 = require("./filter/custom-exception.filter");
+const swagger_1 = require("@nestjs/swagger");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.useGlobalPipes(new common_1.ValidationPipe());
@@ -16,6 +17,17 @@ async function bootstrap() {
     app.useGlobalInterceptors(new invoke_record_interceptor_1.InvokeRecordInterceptor());
     app.useGlobalFilters(new unlogin_filter_1.UnLoginFilter());
     app.useGlobalFilters(new custom_exception_filter_1.CustomExceptionFilter());
+    const config = new swagger_1.DocumentBuilder()
+        .setTitle('会议室预订系统')
+        .setDescription('api 接口文档')
+        .setVersion('1.0')
+        .addBearerAuth({
+        type: 'http',
+        description: '基于 jwt 的认证',
+    })
+        .build();
+    const document = swagger_1.SwaggerModule.createDocument(app, config);
+    swagger_1.SwaggerModule.setup('api-doc', app, document);
     await app.listen(configService.get('nest_server_port'));
 }
 bootstrap();
