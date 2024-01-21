@@ -1,7 +1,10 @@
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, message } from 'antd'
 import { useForm } from 'antd/es/form/Form';
 import './index.css'
-interface RegisterUser {
+import { register, registerCaptcha } from '../interfaces';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+export interface RegisterUser {
     username: string;
     nickName: string;
     password: string;
@@ -9,15 +12,39 @@ interface RegisterUser {
     email: string;
     captcha: string;
 }
-const onFinish = (values: RegisterUser) => {
-    console.log("onFinish", values)
-}
 export function Register() {
     // todo 创建form实例
     const [form] = useForm()
+    const navigate = useNavigate()
     // todo 发送验证码
-    const sendCaptcha = () => {
-
+    // todo useCallback 减少不必要渲染的一种性能优化
+    const sendCaptcha = useCallback(async () => {
+        const address = form.getFieldValue('email')
+        if (!address) {
+            return message.error('请输入邮箱地址');
+        }
+        const res = await registerCaptcha(address);
+        if (res.status === 201 || res.status === 200) {
+            message.success(res.data.data);
+        } else {
+            message.error(res.data.data || '系统繁忙，请稍后再试');
+        }
+    }, [])
+    // todo 注册
+    async function onFinish(values: RegisterUser) {
+        if (values.password !== values.confirmPassword) {
+            return message.error('两次密码不一致');
+        }
+        const res = await register(values);
+        if (res.status === 201 || res.status === 200) {
+            message.success('注册成功');
+            // todo 跳转到登录页
+            setTimeout(() => {
+                navigate('/login')
+            }, 1500)
+        } else {
+            message.error(res.data.data || '系统繁忙，请稍后再试');
+        }
     }
     return (<div className="register-container">
         <h1 className='title'>会议室预订系统</h1>
