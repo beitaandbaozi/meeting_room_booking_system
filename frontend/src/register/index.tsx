@@ -31,21 +31,20 @@ export function Register() {
         }
     }, [])
     // todo 注册
-    async function onFinish(values: RegisterUser) {
+    const onFinish = useCallback(async (values: RegisterUser) => {
         if (values.password !== values.confirmPassword) {
             return message.error('两次密码不一致');
         }
         const res = await register(values);
         if (res.status === 201 || res.status === 200) {
             message.success('注册成功');
-            // todo 跳转到登录页
             setTimeout(() => {
-                navigate('/login')
-            }, 1500)
+                navigate('/login');
+            }, 1500);
         } else {
             message.error(res.data.data || '系统繁忙，请稍后再试');
         }
-    }
+    }, []);
     return (<div className="register-container">
         <h1 className='title'>会议室预订系统</h1>
         <Form
