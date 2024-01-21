@@ -10,6 +10,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  // todo 开启跨域
+  app.enableCors();
   // todo 全局启用 ValidationPipe 对请求体进行校验
   app.useGlobalPipes(new ValidationPipe());
   // todo config 配置
