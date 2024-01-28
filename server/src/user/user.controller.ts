@@ -285,8 +285,7 @@ export class UserController {
     @UserInfo('userId') userId: number,
     @Body() passwordDto: UpdateUserPasswordDto,
   ) {
-    console.log(passwordDto);
-    return 'success';
+    return this.userService.updatePassword(userId, passwordDto);
   }
   // todo 修改密码邮箱发送
   @ApiBearerAuth()

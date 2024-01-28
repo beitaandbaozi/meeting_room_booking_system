@@ -26,7 +26,7 @@ export declare class UserController {
         refresh_token: string;
     }>;
     info(userId: number): Promise<UserDetailVo>;
-    updatePassword(userId: number, passwordDto: UpdateUserPasswordDto): Promise<string>;
+    updatePassword(userId: number, passwordDto: UpdateUserPasswordDto): Promise<"密码修改成功" | "密码修改失败">;
     updatePasswordCaptcha(address: string): Promise<string>;
     updateUserInfo(userId: number, updateUserDto: UpdateUserDto): Promise<string>;
     updateCaptcha(address: string): Promise<string>;

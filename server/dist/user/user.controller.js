@@ -123,8 +123,7 @@ let UserController = class UserController {
         return vo;
     }
     async updatePassword(userId, passwordDto) {
-        console.log(passwordDto);
-        return 'success';
+        return this.userService.updatePassword(userId, passwordDto);
     }
     async updatePasswordCaptcha(address) {
         return await this.userService.updatePasswordCaptcha(address);

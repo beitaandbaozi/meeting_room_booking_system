@@ -1,0 +1,16 @@
+.updatePassword-container {
+    width: 400px;
+    margin: 100px auto 0 auto;
+    text-align: center;
+}
+.updatePassword-container .btn {
+    width: 100%;
+}
+.updatePassword-container .captcha-wrapper {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.captcha-wrapper .btn-captcha {
+    margin-left: 10px;
+}
