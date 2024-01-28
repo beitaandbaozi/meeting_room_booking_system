@@ -46,6 +46,7 @@ let UserController = class UserController {
         vo.accessToken = this.jwtService.sign({
             userId: vo.userInfo.id,
             username: vo.userInfo.username,
+            email: vo.userInfo.email,
             roles: vo.userInfo.roles,
             permissions: vo.userInfo.permissions,
         }, {
@@ -63,6 +64,7 @@ let UserController = class UserController {
         vo.accessToken = this.jwtService.sign({
             userId: vo.userInfo.id,
             username: vo.userInfo.username,
+            email: vo.userInfo.email,
             roles: vo.userInfo.roles,
             permissions: vo.userInfo.permissions,
         }, {
@@ -82,6 +84,7 @@ let UserController = class UserController {
             const access_token = this.jwtService.sign({
                 userId: user.id,
                 username: user.username,
+                email: user.email,
                 roles: user.roles,
                 permissions: user.permissions,
             }, {
@@ -347,8 +350,14 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updateUserInfo", null);
 __decorate([
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiResponse)({
+        type: String,
+        description: '发送成功',
+    }),
+    (0, custom_decorator_1.RequireLogin)(),
     (0, common_1.Get)('update/captcha'),
-    __param(0, (0, common_1.Query)('address')),
+    __param(0, (0, custom_decorator_1.UserInfo)('email')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)

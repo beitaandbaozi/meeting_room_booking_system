@@ -33,6 +33,7 @@ let LoginGuard = class LoginGuard {
             request.user = {
                 userId: data.userId,
                 username: data.username,
+                email: data.email,
                 roles: data.roles,
                 permissions: data.permissions,
             };

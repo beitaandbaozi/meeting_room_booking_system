@@ -4,6 +4,7 @@ import { Permission } from 'src/user/entities/permission.entity';
 interface JwtUserData {
     userId: number;
     username: string;
+    email: string;
     roles: string[];
     permissions: Permission[];
 }
