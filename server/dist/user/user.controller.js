@@ -122,8 +122,8 @@ let UserController = class UserController {
         vo.isFrozen = user.isFrozen;
         return vo;
     }
-    async updatePassword(userId, passwordDto) {
-        return this.userService.updatePassword(userId, passwordDto);
+    async updatePassword(passwordDto) {
+        return this.userService.updatePassword(passwordDto);
     }
     async updatePasswordCaptcha(address) {
         return await this.userService.updatePasswordCaptcha(address);
@@ -295,7 +295,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "info", null);
 __decorate([
-    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiBody)({
         type: update_user_password_dto_1.UpdateUserPasswordDto,
     }),
@@ -304,15 +303,12 @@ __decorate([
         description: '验证码已失效/不正确',
     }),
     (0, common_1.Post)(['update_password', 'admin/update_password']),
-    (0, custom_decorator_1.RequireLogin)(),
-    __param(0, (0, custom_decorator_1.UserInfo)('userId')),
-    __param(1, (0, common_1.Body)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, update_user_password_dto_1.UpdateUserPasswordDto]),
+    __metadata("design:paramtypes", [update_user_password_dto_1.UpdateUserPasswordDto]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updatePassword", null);
 __decorate([
-    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiQuery)({
         name: 'address',
         description: '邮箱地址',
@@ -322,7 +318,6 @@ __decorate([
         type: String,
         description: '发送成功',
     }),
-    (0, custom_decorator_1.RequireLogin)(),
     (0, common_1.Get)('update_password/captcha'),
     __param(0, (0, common_1.Query)('address')),
     __metadata("design:type", Function),

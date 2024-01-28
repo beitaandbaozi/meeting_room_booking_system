@@ -18,6 +18,13 @@ exports.UpdateUserPasswordDto = UpdateUserPasswordDto;
 __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsNotEmpty)({
+        message: '用户名不能为空',
+    }),
+    __metadata("design:type", String)
+], UpdateUserPasswordDto.prototype, "username", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNotEmpty)({
         message: '密码不能为空',
     }),
     (0, class_validator_1.MinLength)(6, {

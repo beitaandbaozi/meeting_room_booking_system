@@ -23,6 +23,7 @@ __decorate([
     (0, typeorm_1.Column)({
         length: 50,
         comment: '用户名',
+        unique: true,
     }),
     __metadata("design:type", String)
 ], User.prototype, "username", void 0);

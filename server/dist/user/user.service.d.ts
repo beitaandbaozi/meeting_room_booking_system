@@ -24,7 +24,7 @@ export declare class UserService {
         permissions: any[];
     }>;
     findUserDetailById(userId: number): Promise<User>;
-    updatePassword(userId: number, passwordDto: UpdateUserPasswordDto): Promise<"密码修改成功" | "密码修改失败">;
+    updatePassword(passwordDto: UpdateUserPasswordDto): Promise<"密码修改成功" | "密码修改失败">;
     updatePasswordCaptcha(address: string): Promise<string>;
     updateUserInfo(userId: number, updateUserDto: UpdateUserDto): Promise<string>;
     updateCaptcha(address: string): Promise<string>;
