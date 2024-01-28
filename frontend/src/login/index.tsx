@@ -58,8 +58,8 @@ export function Login() {
                 wrapperCol={{ span: 24 }}
             >
                 <div className='links'>
-                    <a href="/">创建账号</a>
-                    <a href="/">忘记密码</a>
+                    <a href="/register">创建账号</a>
+                    <a href="/update-password">忘记密码</a>
                 </div>
             </Form.Item>
             <Form.Item

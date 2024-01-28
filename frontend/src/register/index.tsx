@@ -109,7 +109,7 @@ export function Register() {
                 wrapperCol={{ span: 24 }}
             >
                 <div className='links'>
-                    已有账号？去<a href=''>登录</a>
+                    已有账号？去<a href='/login'>登录</a>
                 </div>
             </Form.Item>
 
