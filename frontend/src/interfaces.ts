@@ -126,6 +126,3 @@ export async function updateInfo(data: UserInfo) {
 export async function updateUserInfoCaptcha() {
   return await axiosInstance.get("/user/update/captcha");
 }
-function refreshToken() {
-  throw new Error("Function not implemented.");
-}
