@@ -7,9 +7,12 @@ import { InvokeRecordInterceptor } from './interceptor/invoke-record.interceptor
 import { UnLoginFilter } from './filter/unlogin.filter';
 import { CustomExceptionFilter } from './filter/custom-exception.filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  // todo 将 uploads 目前设置成静态文件目录，这样可以直接访问上传的图片
+  app.useStaticAssets('uploads', { prefix: '/uploads' });
   // todo 开启跨域
   app.enableCors();
   // todo 全局启用 ValidationPipe 对请求体进行校验

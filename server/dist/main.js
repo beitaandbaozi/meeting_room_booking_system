@@ -11,6 +11,7 @@ const custom_exception_filter_1 = require("./filter/custom-exception.filter");
 const swagger_1 = require("@nestjs/swagger");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
+    app.useStaticAssets('uploads', { prefix: '/uploads' });
     app.enableCors();
     app.useGlobalPipes(new common_1.ValidationPipe());
     const configService = app.get(config_1.ConfigService);
