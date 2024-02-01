@@ -4,6 +4,8 @@ import { useCallback, useEffect } from 'react';
 import './index.css';
 import { useNavigate } from 'react-router-dom';
 import { getUserInfo, updateInfo, updateUserInfoCaptcha } from '../interfaces';
+import Dragger, { DraggerProps } from 'antd/es/upload/Dragger';
+import { InboxOutlined } from "@ant-design/icons";
 
 export interface UserInfo {
     headPic: string;
@@ -15,6 +17,46 @@ export interface UserInfo {
 const layout1 = {
     labelCol: { span: 6 },
     wrapperCol: { span: 18 }
+}
+
+
+
+interface HeadPicUploadProps {
+    value?: string;
+    onChange?: Function
+}
+
+let onChange: Function;
+const props: DraggerProps = {
+    name: 'file',
+    action: 'http://localhost:3000/user/upload',
+    onChange(info) {
+        const { status } = info.file;
+        if (status === 'done') {
+            onChange(info.file.response.data)
+            message.success(`${info.file.name} 文件上传成功`);
+        } else if (status === 'error') {
+            message.error(`${info.file.name} 文件上传失败`);
+        }
+    }
+};
+
+const dragger = <Dragger {...props}>
+    <p className="ant-upload-drag-icon">
+        <InboxOutlined />
+    </p>
+    <p className="ant-upload-text">点击或拖拽文件到这个区域来上传</p>
+</Dragger>
+
+export function HeadPicUpload(props: HeadPicUploadProps) {
+    onChange = props.onChange!
+    console.log("HeadPicUpload", props.value)
+    return props?.value ? <div>
+        <img src={'http://localhost:3000/' + props.value} alt="头像" width="100" height="100" />
+        <Button>上传</Button>
+    </div> : <div>
+        {dragger}
+    </div>
 }
 
 export function UpdateInfo() {
@@ -39,7 +81,7 @@ export function UpdateInfo() {
         const res = await updateInfo(values);
         if (res.status === 201 || res.status === 200) {
             const { message: msg, data } = res.data;
-            if (msg === 'success') {
+            if (msg.includes('success')) {
                 message.success('用户信息更新成功');
             } else {
                 message.error(data);
@@ -72,8 +114,9 @@ export function UpdateInfo() {
                 rules={[
                     { required: true, message: '请输入头像!' },
                 ]}
+                shouldUpdate
             >
-                <Input />
+                <HeadPicUpload></HeadPicUpload>
             </Form.Item>
 
             <Form.Item
@@ -113,7 +156,7 @@ export function UpdateInfo() {
                 label=" "
             >
                 <Button className='btn' type="primary" htmlType="submit">
-                    修改密码
+                    修改信息
                 </Button>
             </Form.Item>
         </Form>
