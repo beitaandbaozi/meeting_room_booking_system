@@ -432,6 +432,7 @@ __decorate([
     (0, common_1.Post)('upload'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
         dest: 'uploads',
+        storage: utils_1.storage,
         limits: {
             fileSize: 1024 * 1024 * 3,
         },

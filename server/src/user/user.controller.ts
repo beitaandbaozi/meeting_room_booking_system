@@ -25,7 +25,7 @@ import { RequireLogin, UserInfo } from 'src/custom.decorator';
 import { UserDetailVo } from './vo/user-info.vo';
 import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { generateParseIntPipe } from 'src/utils';
+import { generateParseIntPipe, storage } from 'src/utils';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -412,6 +412,7 @@ export class UserController {
   @UseInterceptors(
     FileInterceptor('file', {
       dest: 'uploads',
+      storage: storage,
       // todo 限制文件大小
       limits: {
         fileSize: 1024 * 1024 * 3,
