@@ -13,6 +13,8 @@ import {
   BadRequestException,
   DefaultValuePipe,
   HttpStatus,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterUserDto } from './dto/register-user.dto';
@@ -33,6 +35,8 @@ import {
 } from '@nestjs/swagger';
 import { LoginUserVo } from './vo/login-user.vo';
 import { RefreshTokenVo } from './vo/refresh-token.vo';
+import { FileInterceptor } from '@nestjs/platform-express';
+import * as path from 'path';
 
 @ApiTags('用户管理模块')
 @Controller('user')
@@ -402,5 +406,31 @@ export class UserController {
       pageNo,
       pageSize,
     );
+  }
+  // todo 上传图片
+  @Post('upload')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      dest: 'uploads',
+      // todo 限制文件大小
+      limits: {
+        fileSize: 1024 * 1024 * 3,
+      },
+      // todo 限制只能上传图片
+      fileFilter(req, file, callback) {
+        //  ??? path.extname 获取文件的扩展名
+        const extname = path.extname(file.originalname);
+        if (['.png', '.jpg', '.gif', '.jpeg'].includes(extname)) {
+          // ??? callback 第一个参数是 error  第二个参数是 是否接收文件
+          callback(null, true);
+        } else {
+          callback(new BadRequestException('只能上传图片'), false);
+        }
+      },
+    }),
+  )
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
+    console.log('file', file);
+    return file.path;
   }
 }

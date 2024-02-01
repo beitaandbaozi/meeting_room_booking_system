@@ -27,6 +27,8 @@ const utils_1 = require("../utils");
 const swagger_1 = require("@nestjs/swagger");
 const login_user_vo_1 = require("./vo/login-user.vo");
 const refresh_token_vo_1 = require("./vo/refresh-token.vo");
+const platform_express_1 = require("@nestjs/platform-express");
+const path = require("path");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -143,6 +145,10 @@ let UserController = class UserController {
     }
     async list(pageNo, pageSize, username, nickName, email) {
         return await this.userService.findUsersByPage(username, nickName, email, pageNo, pageSize);
+    }
+    uploadFile(file) {
+        console.log('file', file);
+        return file.path;
     }
 };
 exports.UserController = UserController;
@@ -422,6 +428,28 @@ __decorate([
     __metadata("design:paramtypes", [Number, Number, String, String, String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "list", null);
+__decorate([
+    (0, common_1.Post)('upload'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
+        dest: 'uploads',
+        limits: {
+            fileSize: 1024 * 1024 * 3,
+        },
+        fileFilter(req, file, callback) {
+            const extname = path.extname(file.originalname);
+            if (['.png', '.jpg', '.gif', '.jpeg'].includes(extname)) {
+                callback(null, true);
+            }
+            else {
+                callback(new common_1.BadRequestException('只能上传图片'), false);
+            }
+        },
+    })),
+    __param(0, (0, common_1.UploadedFile)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "uploadFile", null);
 exports.UserController = UserController = __decorate([
     (0, swagger_1.ApiTags)('用户管理模块'),
     (0, common_1.Controller)('user'),

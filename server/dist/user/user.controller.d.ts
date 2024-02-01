@@ -1,3 +1,4 @@
+/// <reference types="multer" />
 import { UserService } from './user.service';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -32,4 +33,5 @@ export declare class UserController {
     updateCaptcha(address: string): Promise<string>;
     freeze(userId: number): Promise<string>;
     list(pageNo: number, pageSize: number, username: string, nickName: string, email: string): Promise<import("./vo/user-list.vo").UserListVo>;
+    uploadFile(file: Express.Multer.File): string;
 }
