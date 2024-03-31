@@ -7,6 +7,7 @@ import { Register } from './register';
 import { UpdatePassword } from './update-password';
 import { Dash } from './dash';
 import { UpdateInfo } from './update-userinfo';
+import { UserManage } from './user-manage';
 
 const routes = [
   {
@@ -19,8 +20,8 @@ const routes = [
         element: <UpdateInfo></UpdateInfo>
       },
       {
-        path: 'bbb',
-        element: <h1>bbbb</h1>
+        path: 'user-manage',
+        element: <UserManage></UserManage>
       },
     ]
   },

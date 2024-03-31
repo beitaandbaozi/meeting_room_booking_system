@@ -1,7 +1,7 @@
 import { Form, Input, Button, message } from 'antd';
 import './index.css'
 import { login } from '../interfaces';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 
 interface LoginUser {
@@ -58,8 +58,8 @@ export function Login() {
                 wrapperCol={{ span: 24 }}
             >
                 <div className='links'>
-                    <a href="/register">创建账号</a>
-                    <a href="/update-password">忘记密码</a>
+                    <Link to="/register">创建账号</Link>
+                    <Link to="/update-password">忘记密码</Link>
                 </div>
             </Form.Item>
             <Form.Item

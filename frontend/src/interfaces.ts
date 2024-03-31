@@ -5,7 +5,7 @@ import { UserInfo } from "./update-userinfo";
 import { message } from "antd";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "http://localhost:3005",
   timeout: 3000,
 });
 

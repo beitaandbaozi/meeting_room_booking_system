@@ -3,7 +3,7 @@ import { useForm } from 'antd/es/form/Form';
 import './index.css'
 import { register, registerCaptcha } from '../interfaces';
 import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 export interface RegisterUser {
     username: string;
     nickName: string;
@@ -109,7 +109,7 @@ export function Register() {
                 wrapperCol={{ span: 24 }}
             >
                 <div className='links'>
-                    已有账号？去<a href='/login'>登录</a>
+                    已有账号？去<Link to='/login'>登录</Link>
                 </div>
             </Form.Item>
 

@@ -50,13 +50,13 @@ const dragger = <Dragger {...props}>
 </Dragger>
 
 export function HeadPicUpload(props: HeadPicUploadProps) {
+    // todo dragger的 props 就是 HeadPicUpload 组建的props
     onChange = props.onChange!
     console.log("HeadPicUpload", props.value, props.onChange)
     return props?.value ? <div>
         <img src={'http://localhost:3000/' + props.value} alt="头像" width="100" height="100" />
         <Button>上传</Button>
     </div> : <div>
-        // todo dragger的 props 就是 HeadPicUpload 组建的props
         {dragger}
     </div>
 }
