@@ -8,6 +8,7 @@ import { UpdatePassword } from './update-password';
 import { Dash } from './dash';
 import { UpdateInfo } from './update-userinfo';
 import { UserManage } from './user-manage';
+import { Menu } from './menu';
 
 const routes = [
   {
@@ -16,13 +17,15 @@ const routes = [
     errorElement: <ErrorPage />,
     children: [
       {
-        path: 'update-userinfo',
-        element: <UpdateInfo></UpdateInfo>
-      },
-      {
-        path: 'user-manage',
-        element: <UserManage></UserManage>
-      },
+        path: '/',
+        element: <Menu />,
+        children: [
+          {
+            path: 'user-manage',
+            element: <UserManage /> 
+          }
+        ]
+      }
     ]
   },
   {
