@@ -25,6 +25,10 @@ const routes = [
             element: <UserManage /> 
           }
         ]
+      },
+      {
+        path: "update-userinfo",
+        element: <UpdateInfo />
       }
     ]
   },

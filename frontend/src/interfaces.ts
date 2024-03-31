@@ -28,7 +28,7 @@ axiosInstance.interceptors.response.use(
       return Promise.reject(error);
     }
     let { data, config } = error.response;
-    console.log("error", error)
+    console.log("error", error);
     if (refreshing) {
       return new Promise((resolve) => {
         queue.push({
@@ -125,4 +125,32 @@ export async function updateInfo(data: UserInfo) {
 // todo 修改用户信息验证码发送
 export async function updateUserInfoCaptcha() {
   return await axiosInstance.get("/user/update/captcha");
+}
+
+// TODO 用户列表
+export async function userSearch(
+  username: string,
+  nickName: string,
+  email: string,
+  pageNo: number,
+  pageSize: number
+) {
+  return await axiosInstance.get("/user/list", {
+    params: {
+      username,
+      nickName,
+      email,
+      pageNo,
+      pageSize,
+    },
+  });
+}
+
+// TODO 冻结用户
+export async function freeze(id: number) {
+  return await axiosInstance.get('/user/freeze', {
+      params: {
+          id
+      }
+  });
 }
